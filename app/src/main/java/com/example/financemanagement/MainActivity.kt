@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.financemanagement.services.Navigation
 import com.example.financemanagement.ui.theme.FinanceManagementTheme
-import com.example.financemanagement.view.HomeView
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinanceManagementTheme {
-                HomeView()
+                Navigation()
             }
         }
     }
