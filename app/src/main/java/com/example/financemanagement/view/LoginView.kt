@@ -1,5 +1,6 @@
 package com.example.financemanagement.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +25,6 @@ fun LoginView(
     viewModel: LoginViewModel,
     navController: NavController
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     Box(
@@ -52,16 +52,15 @@ fun LoginView(
 
             Button(
                 onClick = {
-                    coroutineScope.launch {
                         viewModel.signIn(
                             onSuccess = {
+                                Log.d("LoginView", "Login successful")
                                 navController.navigate("homeScreen")
                             },
                             onError = { errorMessage ->
                                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                             }
                         )
-                    }
                 }
             ) {
                 Text("Login")

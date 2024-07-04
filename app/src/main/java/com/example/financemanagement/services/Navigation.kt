@@ -10,21 +10,20 @@ import com.example.financemanagement.view.LoginView
 import com.example.financemanagement.viewmodel.LoginViewModel
 
 @Composable
-fun Navigation(
-    navController: NavHostController = rememberNavController()
-){
-
+fun Navigation() {
+    val navController = rememberNavController()
     val loginViewModel = LoginViewModel()
 
     NavHost(
-        navController = rememberNavController(), startDestination = Screens.LoginScreen.route){
-            composable(Screens.HomeScreen.route){
-                HomeView()
-            }
+        navController = navController,
+        startDestination = Screens.LoginScreen.route
+    ) {
+        composable(Screens.HomeScreen.route) {
+            HomeView()
+        }
 
-            composable(Screens.LoginScreen.route){
-                LoginView(loginViewModel,navController)
-            }
-
-       }
+        composable(Screens.LoginScreen.route) {
+            LoginView(loginViewModel, navController)
+        }
+    }
 }
