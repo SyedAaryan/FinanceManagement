@@ -19,7 +19,7 @@ fun Navigation() {
         startDestination = Screens.LoginScreen.route
     ) {
         composable(Screens.HomeScreen.route) {
-            HomeView()
+            HomeView(navController, loginViewModel)
         }
 
         composable(Screens.LoginScreen.route) {
