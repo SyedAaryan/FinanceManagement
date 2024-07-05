@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.financemanagement.view.HomeView
 import com.example.financemanagement.view.LoginView
+import com.example.financemanagement.view.SignUpVIew
 import com.example.financemanagement.viewmodel.LoginViewModel
 
 @Composable
@@ -29,6 +30,10 @@ fun Navigation() {
 
         composable(Screens.LoginScreen.route) {
             LoginView(loginViewModel, navController)
+        }
+
+        composable(Screens.SignUpScreen.route) {
+            SignUpVIew(loginViewModel, navController)
         }
     }
 }

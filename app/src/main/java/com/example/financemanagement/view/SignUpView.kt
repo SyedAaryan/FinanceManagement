@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 
 @Composable
-fun LoginView(
+fun SignUpVIew(
     viewModel: LoginViewModel,
     navController: NavController
 ) {
@@ -55,37 +55,30 @@ fun LoginView(
 
             Button(
                 onClick = {
-                        viewModel.logIn(
-                            onSuccess = {
-                                Log.d("LoginView", "Login successful")
-                                navController.navigate("homeScreen")
-                                viewModel.email = ""
-                                viewModel.password = ""
-                            },
-                            onError = { errorMessage ->
-                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                            }
-                        )
+                    viewModel.signIn(
+                        onSuccess = {
+                            Log.d("SignInView", "SignIn successful")
+                            navController.navigate("homeScreen")
+                            viewModel.email = ""
+                            viewModel.password = ""
+                        },
+                        onError = { errorMessage ->
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                    )
                 }
             ) {
-                Text("Login")
-            }
-
-            Button(
-                modifier = Modifier.padding(16.dp),
-                onClick = {
-                    navController.navigate("signUpScreen")
-                }) {
-                Text(text = "Create Account")
+                Text("Sign In")
             }
         }
-        
+
+
 
     }
 }
 
 @Preview
 @Composable
-fun LoginViewPreview() {
-   LoginView(viewModel = LoginViewModel(), navController = NavController(LocalContext.current))
+fun SignInPreview() {
+    LoginView(viewModel = LoginViewModel(), navController = NavController(LocalContext.current))
 }
