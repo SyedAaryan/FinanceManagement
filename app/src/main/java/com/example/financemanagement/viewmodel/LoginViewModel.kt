@@ -17,6 +17,10 @@ class LoginViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
+    init {
+        user = auth.currentUser
+    }
+
     fun onUsernameChange(newUsername: String) {
         username = newUsername
     }

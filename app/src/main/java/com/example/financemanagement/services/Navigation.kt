@@ -1,7 +1,6 @@
 package com.example.financemanagement.services
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,9 +13,15 @@ fun Navigation() {
     val navController = rememberNavController()
     val loginViewModel = LoginViewModel()
 
+    val startDestination = if (loginViewModel.user != null) {
+        Screens.HomeScreen.route
+    } else {
+        Screens.LoginScreen.route
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Screens.LoginScreen.route
+        startDestination = startDestination
     ) {
         composable(Screens.HomeScreen.route) {
             HomeView(navController, loginViewModel)
