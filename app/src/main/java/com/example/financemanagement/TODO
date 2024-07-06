@@ -1,11 +1,17 @@
 TO BE DONE NOW
-Work on creating new user acc
-Work on Side Bard for the App
-Move the SignOut Function in the side bar
+Work on the Transaction Screen
+WOrk on add transaction using dummy data
 
 
 CAN BE DONE LATER
 Add a remember me check box in the Login Screen with data store
+Keep signUp as a dialog box instead of a whole diff screen ??
 
 IDEAS
 In the homeView, below the Big card we can add money spent in Net Banking and cash
+
+UI
+Work On LoginView UI
+Work On SignUpView UI
+Work On HomeView UI
+Work on Side Bar UI
