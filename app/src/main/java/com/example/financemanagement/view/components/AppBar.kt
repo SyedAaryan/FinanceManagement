@@ -1,6 +1,7 @@
 package com.example.financemanagement.view.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.colorResource
+import androidx.navigation.NavController
 import com.example.financemanagement.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,26 +21,42 @@ import kotlinx.coroutines.launch
 @Composable
 fun AppBar(
     title: String,
-    drawerState: DrawerState,
-    coroutineScope: CoroutineScope
+    navController: NavController,
+    drawerState: DrawerState? = null,
+    coroutineScope: CoroutineScope? = null
 ){
 
-
-
-    TopAppBar(
+    if (title == "Finance Management")
+    {
+        TopAppBar(
         title = { Text(text = title)},
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(id = R.color.AppLightBlue)
         ),
         navigationIcon = {
             IconButton(onClick = {
-                coroutineScope.launch {
-                    drawerState.open()
+                coroutineScope?.launch {
+                    drawerState?.open()
                 }
             }) {
                 Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu")
             }
         }
 
-    )
+    )}else{
+        TopAppBar(
+            title = { Text(text = title)},
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = colorResource(id = R.color.AppLightBlue)
+            ),
+            navigationIcon = {
+                IconButton(onClick = {
+                    navController.navigate("homeScreen")
+                }) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "BackArrow")
+                }
+            })
+    }
+
+
 }

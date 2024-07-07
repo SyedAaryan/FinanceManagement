@@ -1,6 +1,8 @@
 TO BE DONE NOW
 Work on the Transaction Screen
 WOrk on add transaction using dummy data
+Connect With firebase
+check point 1 of IDEAS
 
 
 CAN BE DONE LATER
@@ -8,6 +10,7 @@ Add a remember me check box in the Login Screen with data store
 Keep signUp as a dialog box instead of a whole diff screen ??
 
 IDEAS
+Use a dummy salary data to display in the homeView card and make a function which reduced the money and updates in the database
 In the homeView, below the Big card we can add money spent in Net Banking and cash
 
 UI

@@ -74,10 +74,10 @@ dependencies {
 
 
 
-    // When using the BoM, don't specify versions in Firebase dependencies
     implementation(libs.firebase.analytics)
 
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
 
 
 }

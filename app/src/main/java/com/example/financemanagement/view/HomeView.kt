@@ -37,6 +37,18 @@ fun HomeView(navController: NavController, viewModel: LoginViewModel) {
                 Column {
                     Spacer(Modifier.height(12.dp))
                     NavigationDrawerItem(
+                        label = { Text("Settings") },
+                        selected = false,
+                        onClick = {
+                            coroutineScope.launch {
+                                drawerState.close()
+                                navController.navigate("settingScreen")
+                            }
+
+                        })
+
+                    Spacer(Modifier.height(12.dp))
+                    NavigationDrawerItem(
                         label = { Text("sign Out") },
                         selected = false,
                         onClick = {
@@ -56,7 +68,8 @@ fun HomeView(navController: NavController, viewModel: LoginViewModel) {
             AppBar(
                 title = "Finance Management",
                 drawerState = drawerState,
-                coroutineScope = coroutineScope)
+                coroutineScope = coroutineScope,
+                navController = navController)
         },
         bottomBar = { BottomBar() }
     ) {
