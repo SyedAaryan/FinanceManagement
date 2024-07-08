@@ -9,11 +9,13 @@ import com.example.financemanagement.view.LoginView
 import com.example.financemanagement.view.SettingsView
 import com.example.financemanagement.view.SignUpVIew
 import com.example.financemanagement.viewmodel.LoginViewModel
+import com.example.financemanagement.viewmodel.SalaryViewModel
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     val loginViewModel = LoginViewModel()
+    val salaryViewModel = SalaryViewModel()
 
     val startDestination = if (loginViewModel.user != null) {
         Screens.HomeScreen.route
@@ -38,7 +40,7 @@ fun Navigation() {
         }
 
         composable(Screens.SettingScreen.route){
-            SettingsView(navController)
+            SettingsView(navController, salaryViewModel)
         }
     }
 }
