@@ -17,15 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.BottomBar
 import com.example.financemanagement.view.components.HomeViewCard
-import com.example.financemanagement.viewmodel.LoginViewModel
+import com.example.financemanagement.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeView(navController: NavController, viewModel: LoginViewModel) {
+fun HomeView(
+    navController: NavController,
+    viewmodel: HomeViewModel = viewModel()
+) {
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
@@ -49,12 +53,12 @@ fun HomeView(navController: NavController, viewModel: LoginViewModel) {
 
                     Spacer(Modifier.height(12.dp))
                     NavigationDrawerItem(
-                        label = { Text("sign Out") },
+                        label = { Text("Sign Out") },
                         selected = false,
                         onClick = {
                             coroutineScope.launch {
                                 drawerState.close()
-                                viewModel.signOut()
+                                viewmodel.signOut()
                                 navController.navigate("loginScreen")
                             }
 
@@ -78,7 +82,7 @@ fun HomeView(navController: NavController, viewModel: LoginViewModel) {
                 .padding(it)
                 .fillMaxSize()
         ) {
-            HomeViewCard()
+            HomeViewCard(viewmodel.salary)
 
         }
     }

@@ -17,12 +17,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
 fun LoginView(
-    viewModel: LoginViewModel,
-    navController: NavController
+    navController: NavController,
+    viewmodel: LoginViewModel = viewModel()
 ) {
     val context = LocalContext.current
 
@@ -39,28 +40,28 @@ fun LoginView(
         ) {
             InputTextField(
                 label = "Email",
-                value = viewModel.email,
+                value = viewmodel.email,
                 onValueChanged = {
-                    viewModel.onUsernameChange(it)
+                    viewmodel.email = it
                 }
             )
 
             InputTextField(
                 label = "Password",
-                value = viewModel.password,
+                value = viewmodel.password,
                 onValueChanged = {
-                    viewModel.onPasswordChange(it)
+                    viewmodel.password = it
                 }
             )
 
             Button(
                 onClick = {
-                        viewModel.logIn(
+                        viewmodel.logIn(
                             onSuccess = {
                                 Log.d("LoginView", "Login successful")
                                 navController.navigate("homeScreen")
-                                viewModel.email = ""
-                                viewModel.password = ""
+                                viewmodel.email = ""
+                                viewmodel.password = ""
                             },
                             onError = { errorMessage ->
                                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
@@ -87,5 +88,5 @@ fun LoginView(
 @Preview
 @Composable
 fun LoginViewPreview() {
-   LoginView(viewModel = LoginViewModel(), navController = NavController(LocalContext.current))
+   LoginView(viewmodel = LoginViewModel(), navController = NavController(LocalContext.current))
 }

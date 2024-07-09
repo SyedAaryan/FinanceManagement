@@ -1,29 +1,46 @@
 package com.example.financemanagement.repository
 
-import com.example.financemanagement.model.Salary
 import com.example.financemanagement.services.FirebaseService
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.tasks.await
 
 object SalaryRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
-    private val auth by lazy { FirebaseAuth.getInstance() }
 
-    fun addSalary(salary: Int, onSuccess: (key: String) -> Unit, onFailure: (Exception) -> Unit) {
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val uid = currentUser.uid
-            val key = database.getReference("User/$uid/salary").push().key ?: ""
-            database.getReference("User/$uid/salary/$key")
-                .setValue(Salary(salary))
-                .addOnSuccessListener {
-                    onSuccess(key)
-                }
-                .addOnFailureListener { e ->
-                    onFailure(e)
-                }
+    suspend fun addSalary(salary: Int) {
+        val user = FirebaseService.user
+        if (user != null) {
+            val uid = user.uid
+            try {
+                database.getReference("Users/$uid/salary")
+                    .setValue(salary)
+                    .await()
+            } catch (e: Exception) {
+                throw e
+            }
         } else {
-            onFailure(Exception("User not authenticated"))
+            throw IllegalStateException("User is not authenticated.")
+        }
+    }
+
+    fun getSalary(onChange: (Int) -> Unit, onFailure: (Exception) -> Unit){
+        val user = FirebaseService.user
+        if (user != null) {
+            val uid = user.uid
+            database.getReference("Users/$uid/salary")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val salary = snapshot.getValue(Int::class.java)
+                        onChange(salary ?: 0)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        onFailure(Exception("Failed to get salary"))
+                    }
+                })
         }
     }
 }

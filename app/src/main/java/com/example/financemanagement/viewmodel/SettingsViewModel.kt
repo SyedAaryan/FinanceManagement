@@ -4,24 +4,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.financemanagement.repository.SalaryRepository
+import kotlinx.coroutines.launch
 
-class SalaryViewModel : ViewModel() {
+class SettingsViewModel: ViewModel() {
 
     var salary by mutableStateOf("")
 
-    fun onSalaryChange(newSalary: String) {
-        salary = newSalary
-    }
-
     fun addSalary(onSuccess: () -> Unit, onFailure: () -> Unit) {
-        SalaryRepository.addSalary(salary.toInt(),
-            onSuccess = {
+        viewModelScope.launch {
+            try {
+                SalaryRepository.addSalary(salary.toInt())
                 onSuccess()
-            },
-            onFailure = {
+            } catch (e: Exception) {
                 onFailure()
             }
-        )
+        }
     }
+
 }
+

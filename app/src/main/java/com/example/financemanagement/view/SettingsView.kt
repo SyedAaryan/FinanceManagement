@@ -11,17 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.financemanagement.R
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.InputTextField
-import com.example.financemanagement.viewmodel.SalaryViewModel
+import com.example.financemanagement.viewmodel.SettingsViewModel
 
 @Composable
-fun SettingsView(navController: NavController, viewModel: SalaryViewModel){
+fun SettingsView(
+    navController: NavController,
+    viewmodel: SettingsViewModel = viewModel()
+) {
     Scaffold(
         topBar = {
             AppBar(
@@ -37,9 +39,9 @@ fun SettingsView(navController: NavController, viewModel: SalaryViewModel){
         ) {
             InputTextField(
                 label = "Salary",
-                value = viewModel.salary,
+                value = viewmodel.salary,
                 onValueChanged = {
-                    viewModel.onSalaryChange(it)
+                    viewmodel.salary = it
                 }
 
             )
@@ -47,7 +49,7 @@ fun SettingsView(navController: NavController, viewModel: SalaryViewModel){
             Button(
                 modifier = Modifier.padding(it),
                 onClick = {
-                    viewModel.addSalary(
+                    viewmodel.addSalary(
                         onSuccess = {
                             navController.navigateUp()
                         },
@@ -67,11 +69,3 @@ fun SettingsView(navController: NavController, viewModel: SalaryViewModel){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SettingsViewPreview() {
-    val navController = rememberNavController()
-    val mockViewModel = SalaryViewModel()
-
-    SettingsView(navController = navController, viewModel = mockViewModel)
-}

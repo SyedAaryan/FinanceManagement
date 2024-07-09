@@ -8,16 +8,13 @@ import com.example.financemanagement.view.HomeView
 import com.example.financemanagement.view.LoginView
 import com.example.financemanagement.view.SettingsView
 import com.example.financemanagement.view.SignUpVIew
-import com.example.financemanagement.viewmodel.LoginViewModel
-import com.example.financemanagement.viewmodel.SalaryViewModel
+
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    val loginViewModel = LoginViewModel()
-    val salaryViewModel = SalaryViewModel()
 
-    val startDestination = if (loginViewModel.user != null) {
+    val startDestination = if (FirebaseService.user != null) {
         Screens.HomeScreen.route
     } else {
         Screens.LoginScreen.route
@@ -28,19 +25,19 @@ fun Navigation() {
         startDestination = startDestination
     ) {
         composable(Screens.HomeScreen.route) {
-            HomeView(navController, loginViewModel)
+                HomeView(navController)
         }
 
         composable(Screens.LoginScreen.route) {
-            LoginView(loginViewModel, navController)
+            LoginView(navController)
         }
 
         composable(Screens.SignUpScreen.route) {
-            SignUpVIew(loginViewModel, navController)
+            SignUpVIew(navController)
         }
 
         composable(Screens.SettingScreen.route){
-            SettingsView(navController, salaryViewModel)
+                SettingsView(navController)
         }
     }
 }
