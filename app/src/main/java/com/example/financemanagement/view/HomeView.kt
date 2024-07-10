@@ -75,7 +75,7 @@ fun HomeView(
                 coroutineScope = coroutineScope,
                 navController = navController)
         },
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar(navController) }
     ) {
         Box(
             modifier = Modifier

@@ -13,10 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.financemanagement.R
 
 @Composable
-fun BottomBar(){
+fun BottomBar(
+    navController: NavController
+){
     BottomAppBar(
         containerColor = colorResource(id = R.color.AppLightBlue) ,
         contentColor = Color.White,
@@ -24,17 +27,19 @@ fun BottomBar(){
         Spacer(modifier = Modifier.weight(1f, true))
 
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("transactionScreen")
+            },
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.AppLightGreen)),
             border = BorderStroke(1.dp, Color.White)
         ) {
-            Text("Transaction", fontWeight = FontWeight.Bold)
+            Text("Transactions", fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.width(30.dp))
 
         Button(
-            onClick = {},
+            onClick = { },
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.AppLightGreen)),
             border = BorderStroke(1.dp, Color.White)
         ) {

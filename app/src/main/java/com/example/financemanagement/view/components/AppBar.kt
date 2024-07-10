@@ -51,7 +51,7 @@ fun AppBar(
             ),
             navigationIcon = {
                 IconButton(onClick = {
-                    navController.navigate("homeScreen")
+                    navController.navigateUp()
                 }) {
                     Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "BackArrow")
                 }
