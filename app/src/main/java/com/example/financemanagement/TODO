@@ -7,6 +7,7 @@ check point 1 of IDEAS
 CAN BE DONE LATER
 Add a remember me check box in the Login Screen with data store
 Make the salary type as int and not String (it takes as string and converts to int, change it maybe ?)
+Make it so that each transaction are clickable ? And add other feature?
 
 IDEAS
 Use a dummy salary data to display in the homeView card and make a function which reduced the money and updates in the database

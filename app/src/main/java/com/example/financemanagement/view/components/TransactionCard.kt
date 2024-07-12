@@ -1,5 +1,6 @@
 package com.example.financemanagement.view.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,9 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.financemanagement.model.Transactions
+import com.google.firebase.database.Transaction
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Composable
-fun TransactionCard() {
+fun TransactionCard(
+    transaction: Transactions? = null,
+) {
 
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -22,8 +30,9 @@ fun TransactionCard() {
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
-            Text(text = "Date and Time" ,fontWeight = FontWeight.Bold)
-            Text(text = "laptop")
+            Text(text = transaction?.date?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate().toString() } ?: "",fontWeight = FontWeight.Bold)
+            Text(text = transaction?.reason?:"")
+            Text(text = transaction?.amount.toString())
         }
     }
 
