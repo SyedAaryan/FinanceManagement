@@ -4,7 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.financemanagement.repository.TransactionRepository
+import kotlinx.coroutines.launch
 
 class AddTransactionViewModel : ViewModel() {
 
@@ -25,6 +27,7 @@ class AddTransactionViewModel : ViewModel() {
     }
 
     fun addTransaction(onSuccess: () -> Unit, onFailure: () -> Unit){
+        viewModelScope.launch {
         TransactionRepository.addTransaction(transactionDate?: 0L, transactionReason,transactionAmount.toInt(),
             onSuccess = {
                 onSuccess()
@@ -33,6 +36,7 @@ class AddTransactionViewModel : ViewModel() {
                 onFailure()
             }
         )
+    }
     }
 
 }
