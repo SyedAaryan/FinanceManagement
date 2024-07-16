@@ -1,6 +1,5 @@
 package com.example.financemanagement.view.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.financemanagement.model.Transactions
-import com.google.firebase.database.Transaction
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

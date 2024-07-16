@@ -105,7 +105,7 @@ fun AddTransactionView(
                     containerColor = colorResource(id = R.color.AppLightGreen)
                 )
             ) {
-                Text(text = "Add Event", style = TextStyle(fontSize = 18.sp))
+                Text(text = "Add Transaction", style = TextStyle(fontSize = 18.sp))
             }
         }
     }
