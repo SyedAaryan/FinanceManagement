@@ -30,6 +30,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import com.example.financemanagement.R
+import com.example.financemanagement.view.components.RadioButtonGroup
 
 @Composable
 fun AddTransactionView(
@@ -87,9 +88,21 @@ fun AddTransactionView(
                 }
             )
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text("Payment Method", style = TextStyle(fontSize = 16.sp))
+
+            RadioButtonGroup(
+                options = listOf("Net Banking", "Cash"),
+                selectedOption = viewmodel.selectedPaymentMethod,
+                onOptionSelected = {
+                    viewmodel.onPaymentMethodChange(it)
+                }
+            )
+
             Button(
                 onClick = {
-                    if (viewmodel.transactionDate == null || viewmodel.transactionReason.isEmpty() || viewmodel.transactionAmount.isEmpty()){
+                    if (viewmodel.transactionDate == null || viewmodel.transactionReason.isEmpty() || viewmodel.transactionAmount.isEmpty() || viewmodel.selectedPaymentMethod.isEmpty()){
                         return@Button
                     }
                     viewmodel.addTransaction(

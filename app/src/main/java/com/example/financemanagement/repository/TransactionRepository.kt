@@ -16,6 +16,7 @@ object TransactionRepository {
         date: Long,
         reason: String,
         amount: Int,
+        method: String,
         onSuccess: (key: String) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -25,7 +26,7 @@ object TransactionRepository {
             try {
                 // Add transaction to Firebase
                 database.getReference("Users/$uid/Transactions/$key")
-                    .setValue(Transactions(date, reason, amount))
+                    .setValue(Transactions(date, reason, amount,method))
                     .await()
 
                 // Fetch current salary and deduct the transaction amount

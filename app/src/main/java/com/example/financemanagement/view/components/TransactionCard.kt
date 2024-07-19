@@ -31,6 +31,7 @@ fun TransactionCard(
             Text(text = transaction?.date?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate().toString() } ?: "",fontWeight = FontWeight.Bold)
             Text(text = transaction?.reason?:"")
             Text(text = transaction?.amount.toString())
+            Text(text = transaction?.method?:"")
         }
     }
 

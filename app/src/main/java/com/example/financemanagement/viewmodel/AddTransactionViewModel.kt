@@ -13,6 +13,7 @@ class AddTransactionViewModel : ViewModel() {
     var transactionDate: Long? by mutableStateOf(null)
     var transactionReason by mutableStateOf("")
     var transactionAmount by mutableStateOf("")
+    var selectedPaymentMethod by mutableStateOf("")
 
     fun onTransactionDateChange(newDate: Long?){
         transactionDate = newDate
@@ -26,9 +27,13 @@ class AddTransactionViewModel : ViewModel() {
         transactionAmount= newString
     }
 
+    fun onPaymentMethodChange(method: String) {
+        selectedPaymentMethod = method
+    }
+
     fun addTransaction(onSuccess: () -> Unit, onFailure: () -> Unit){
         viewModelScope.launch {
-        TransactionRepository.addTransaction(transactionDate?: 0L, transactionReason,transactionAmount.toInt(),
+        TransactionRepository.addTransaction(transactionDate?: 0L, transactionReason,transactionAmount.toInt(),selectedPaymentMethod,
             onSuccess = {
                 onSuccess()
             },
