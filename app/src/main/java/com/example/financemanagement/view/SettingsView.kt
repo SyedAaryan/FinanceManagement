@@ -1,5 +1,6 @@
 package com.example.financemanagement.view
 
+import SettingsViewDialog
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,6 +9,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +29,9 @@ fun SettingsView(
     navController: NavController,
     viewmodel: SettingsViewModel = viewModel()
 ) {
+
+    var showDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             AppBar(
@@ -51,7 +59,7 @@ fun SettingsView(
                 onClick = {
                     viewmodel.addSalary(
                         onSuccess = {
-                            navController.navigateUp()
+
                         },
                         onFailure = {
 
@@ -64,6 +72,23 @@ fun SettingsView(
             ) {
                 Text(text = "Add Salary", style = TextStyle(fontSize = 18.sp))
             }
+
+            Button(
+                modifier = Modifier.padding(it),
+                onClick = {
+                    showDialog = true
+                }) {
+                Text(text = "Add Reason", style = TextStyle(fontSize = 18.sp))
+            }
+
+            if(showDialog){
+                SettingsViewDialog(
+                    onDismissRequest = {
+                        showDialog = false
+                    }
+                )
+            }
+
         }
 
     }

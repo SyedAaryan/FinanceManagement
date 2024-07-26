@@ -1,3 +1,8 @@
+ReasonRepository work
+Work on the Add, delete and update functions in the ReasonRepository
+Mke a dropdown which is accesssable from settingsview and addtransactionview
+
+
 TO BE DONE NOW
 Add features like a Dropdown menu for the AddTransaction screen so that the user can select between common things
 The user should be able ot select the things he want in the drop down menu from the settings

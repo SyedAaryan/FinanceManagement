@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.financemanagement.repository.ReasonRepository
 import com.example.financemanagement.repository.SalaryRepository
 import kotlinx.coroutines.launch
 
 class SettingsViewModel: ViewModel() {
 
     var salary by mutableStateOf("")
+    var reason by mutableStateOf("")
 
     fun addSalary(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
@@ -18,6 +20,17 @@ class SettingsViewModel: ViewModel() {
                 SalaryRepository.addSalary(salary.toInt())
                 onSuccess()
             } catch (e: Exception) {
+                onFailure()
+            }
+        }
+    }
+
+    fun addReason(onSuccess: () -> Unit, onFailure: () -> Unit){
+        viewModelScope.launch {
+            try {
+                ReasonRepository.addReason(reason)
+                onSuccess()
+            }catch (e: Exception){
                 onFailure()
             }
         }
