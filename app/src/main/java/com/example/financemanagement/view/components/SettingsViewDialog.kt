@@ -16,6 +16,7 @@ fun SettingsViewDialog(
         confirmButton = {
             Button(onClick = {
                 viewmodel.addReason(onSuccess = {}, onFailure = {})
+                viewmodel.reason = ""
                 onDismissRequest()
             }) {
                 Text("Confirm")

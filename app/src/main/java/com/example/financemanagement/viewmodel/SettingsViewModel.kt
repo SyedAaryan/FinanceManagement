@@ -14,6 +14,9 @@ class SettingsViewModel: ViewModel() {
     var salary by mutableStateOf("")
     var reason by mutableStateOf("")
 
+    var reasonsMap by mutableStateOf(mapOf<String, String>())
+        private set
+
     fun addSalary(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
             try {
@@ -33,6 +36,22 @@ class SettingsViewModel: ViewModel() {
             }catch (e: Exception){
                 onFailure()
             }
+        }
+    }
+
+    init {
+        fetchReasons()
+    }
+
+    private fun fetchReasons() {
+        viewModelScope.launch {
+            ReasonRepository.getReasons(
+                onChange = { reasons ->
+                    reasonsMap = reasons
+                },
+                onFailure = {
+                }
+            )
         }
     }
 

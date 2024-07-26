@@ -1,7 +1,8 @@
 package com.example.financemanagement.view
 
 import SettingsViewDialog
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -16,11 +17,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.financemanagement.R
 import com.example.financemanagement.view.components.AppBar
+import com.example.financemanagement.view.components.DropDownForReason
 import com.example.financemanagement.view.components.InputTextField
 import com.example.financemanagement.viewmodel.SettingsViewModel
 
@@ -40,10 +43,12 @@ fun SettingsView(
             )
         }
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .padding(it)
                 .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             InputTextField(
                 label = "Salary",
@@ -51,11 +56,9 @@ fun SettingsView(
                 onValueChanged = {
                     viewmodel.salary = it
                 }
-
             )
 
             Button(
-                modifier = Modifier.padding(it),
                 onClick = {
                     viewmodel.addSalary(
                         onSuccess = {
@@ -74,23 +77,22 @@ fun SettingsView(
             }
 
             Button(
-                modifier = Modifier.padding(it),
                 onClick = {
                     showDialog = true
                 }) {
                 Text(text = "Add Reason", style = TextStyle(fontSize = 18.sp))
             }
 
-            if(showDialog){
+            DropDownForReason(viewModel = viewmodel)
+
+            if (showDialog) {
                 SettingsViewDialog(
                     onDismissRequest = {
                         showDialog = false
                     }
                 )
             }
-
         }
-
     }
 }
 
