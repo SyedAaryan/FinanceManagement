@@ -13,6 +13,7 @@ class SettingsViewModel: ViewModel() {
 
     var salary by mutableStateOf("")
     var reason by mutableStateOf("")
+    var selectedReasonKey by mutableStateOf("")
 
     var reasonsMap by mutableStateOf(mapOf<String, String>())
         private set
@@ -32,6 +33,17 @@ class SettingsViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 ReasonRepository.addReason(reason)
+                onSuccess()
+            }catch (e: Exception){
+                onFailure()
+            }
+        }
+    }
+
+    fun deleteReason(onSuccess: () -> Unit, onFailure: () -> Unit){
+        viewModelScope.launch {
+            try {
+                ReasonRepository.deleteReason(selectedReasonKey)
                 onSuccess()
             }catch (e: Exception){
                 onFailure()

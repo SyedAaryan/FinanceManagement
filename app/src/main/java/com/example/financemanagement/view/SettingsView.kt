@@ -34,6 +34,7 @@ fun SettingsView(
 ) {
 
     var showDialog by remember { mutableStateOf(false) }
+    var dialogTitle by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -78,15 +79,25 @@ fun SettingsView(
 
             Button(
                 onClick = {
+                    dialogTitle = "Add Reason"
                     showDialog = true
                 }) {
                 Text(text = "Add Reason", style = TextStyle(fontSize = 18.sp))
+            }
+
+            Button(
+                onClick = {
+                    dialogTitle = "Delete Reason"
+                    showDialog = true
+                }) {
+                Text(text = "Delete Reason", style = TextStyle(fontSize = 18.sp))
             }
 
             DropDownForReason(viewModel = viewmodel)
 
             if (showDialog) {
                 SettingsViewDialog(
+                    title = dialogTitle,
                     onDismissRequest = {
                         showDialog = false
                     }

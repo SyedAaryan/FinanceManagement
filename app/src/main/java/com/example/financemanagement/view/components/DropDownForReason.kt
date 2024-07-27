@@ -51,11 +51,12 @@ fun DropDownForReason(
                 onDismissRequest = { isExpanded = false },
                 modifier = Modifier.background(color = Color.White)
             ){
-                viewModel.reasonsMap.forEach { (value) ->
+                viewModel.reasonsMap.forEach { (key, value) ->
                     DropdownMenuItem(
                         text = { Text(value) },
                         onClick = {
                             selectedItem = value
+                            viewModel.selectedReasonKey = key
                             isExpanded = false
                         }
                     )
