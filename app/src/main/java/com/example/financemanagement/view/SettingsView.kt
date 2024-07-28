@@ -93,6 +93,14 @@ fun SettingsView(
                 Text(text = "Delete Reason", style = TextStyle(fontSize = 18.sp))
             }
 
+            Button(
+                onClick = {
+                    dialogTitle = "Update Reason"
+                    showDialog = true
+                }) {
+                Text(text = "Update Reason", style = TextStyle(fontSize = 18.sp))
+            }
+
             DropDownForReason(viewModel = viewmodel)
 
             if (showDialog) {

@@ -24,6 +24,9 @@ fun SettingsViewDialog(
                 }else if(title == "Delete Reason"){
                     viewmodel.deleteReason(onSuccess = {}, onFailure = {})
                     onDismissRequest()
+                }else{
+                    viewmodel.updateReason(onSuccess = {}, onFailure = {})
+                    onDismissRequest()
                 }
             }) {
                 Text("Confirm")
@@ -45,12 +48,28 @@ fun SettingsViewDialog(
                         }
                     )
                 }
-            }else{
+            }else if (title == "Delete Reason"){
                 Column {
 
                     Text(text = "Select a reason to delete")
 
                     DropDownForReason(viewModel = viewmodel)
+
+                }
+            }else{
+                Column {
+
+                    Text(text = "Select a reason to update")
+
+                    DropDownForReason(viewModel = viewmodel)
+
+                    InputTextField(
+                        label = "Update Reason",
+                        value = viewmodel.newReason,
+                        onValueChanged = {
+                            viewmodel.newReason = it
+                        }
+                    )
 
                 }
             }
