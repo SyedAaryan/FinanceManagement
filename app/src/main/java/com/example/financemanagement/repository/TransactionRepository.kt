@@ -10,7 +10,6 @@ import kotlinx.coroutines.tasks.await
 object TransactionRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
-    private val user = FirebaseService.user
 
     suspend fun addTransaction(
         date: Long,
@@ -20,6 +19,7 @@ object TransactionRepository {
         onSuccess: (key: String) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             val key = database.getReference("Users/$uid/Transactions").push().key ?: ""
@@ -51,6 +51,7 @@ object TransactionRepository {
         onChange: (Map<String, Transactions>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             database.getReference("Users/$uid/Transactions")

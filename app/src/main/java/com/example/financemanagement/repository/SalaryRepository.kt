@@ -9,9 +9,9 @@ import kotlinx.coroutines.tasks.await
 object SalaryRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
-    private val user = FirebaseService.user
 
     suspend fun addSalary(salary: Int) {
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             try {
@@ -27,6 +27,7 @@ object SalaryRepository {
     }
 
     fun getSalary(onChange: (Int) -> Unit, onFailure: (Exception) -> Unit){
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             database.getReference("Users/$uid/salary")

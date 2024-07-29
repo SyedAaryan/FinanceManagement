@@ -9,9 +9,9 @@ import kotlinx.coroutines.tasks.await
 object ReasonRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
-    private val user = FirebaseService.user
 
     suspend fun addReason(reason: String) {
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             val key = database.getReference("Users/$uid/Reasons").push().key ?: ""
@@ -28,6 +28,7 @@ object ReasonRepository {
     }
 
     suspend fun updateReason(key: String, newReason: String) {
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             try {
@@ -45,6 +46,7 @@ object ReasonRepository {
 
 
     suspend fun deleteReason(key: String) {
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             try {
@@ -60,7 +62,7 @@ object ReasonRepository {
     }
 
     fun getReasons(onChange: (Map<String, String>) -> Unit, onFailure: (Exception) -> Unit) {
-
+        val user = FirebaseService.user
         if (user != null){
             val uid = user.uid
             database.getReference("Users/$uid/Reasons")
