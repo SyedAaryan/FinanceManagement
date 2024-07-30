@@ -1,9 +1,9 @@
+package com.example.financemanagement.view.components
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financemanagement.view.components.DropDownForReason
-import com.example.financemanagement.view.components.InputTextField
 import com.example.financemanagement.viewmodel.SettingsViewModel
 
 @Composable
@@ -40,26 +40,26 @@ fun SettingsViewDialog(
             }
         },
         text = {
-            if(title == "Add Reason"){
-                Column {
-                    InputTextField(
-                        label = "Add Reason",
-                        value = viewmodel.reason,
-                        onValueChanged = {
-                            viewmodel.reason = it
-                        }
-                    )
+            when (title){
+                "Add Reason" -> {
+                    Column {
+                        InputTextField(
+                            label = "Add Reason",
+                            value = viewmodel.reason,
+                            onValueChanged = {
+                                viewmodel.reason = it
+                            }
+                        )
+                    }
                 }
-            }else if (title == "Delete Reason"){
-                Column {
-
-                    Text(text = "Select a reason to delete")
-
-                    DropDownForReason(reasonsMap = viewmodel.reasonsMap, selectedReasonKey = viewmodel.selectedReasonKey)
-
+                "Delete Reason" -> {
+                    Column {
+                        Text(text = "Select a reason to delete")
+                        DropDownForReason(reasonsMap = viewmodel.reasonsMap, selectedReasonKey = viewmodel.selectedReasonKey)
+                    }
                 }
-            }else{
-                Column {
+                "Update Reason" -> {
+                    Column {
 
                     Text(text = "Select a reason to update")
 
@@ -73,6 +73,7 @@ fun SettingsViewDialog(
                         }
                     )
 
+                }
                 }
             }
         }

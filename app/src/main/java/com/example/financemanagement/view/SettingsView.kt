@@ -1,6 +1,6 @@
 package com.example.financemanagement.view
 
-import SettingsViewDialog
+import com.example.financemanagement.view.components.SettingsViewDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
