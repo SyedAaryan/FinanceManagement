@@ -30,6 +30,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import com.example.financemanagement.R
+import com.example.financemanagement.view.components.DropDownForReason
 import com.example.financemanagement.view.components.RadioButtonGroup
 
 @Composable
@@ -80,12 +81,9 @@ fun AddTransactionView(
             
             Spacer(modifier = Modifier.height(10.dp))
 
-            InputTextField(
-                label = "Reason",
-                value = viewmodel.transactionReason,
-                onValueChanged = {
-                    viewmodel.onTransactionReasonChange(it)
-                }
+            DropDownForReason(
+                reasonsMap = viewmodel.reasonsMap,
+                selectedReasonKey = viewmodel.selectedReason
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -102,7 +100,7 @@ fun AddTransactionView(
 
             Button(
                 onClick = {
-                    if (viewmodel.transactionDate == null || viewmodel.transactionReason.isEmpty() || viewmodel.transactionAmount.isEmpty() || viewmodel.selectedPaymentMethod.isEmpty()){
+                    if (viewmodel.transactionDate == null || viewmodel.selectedReason.value.isEmpty() || viewmodel.transactionAmount.isEmpty() || viewmodel.selectedPaymentMethod.isEmpty()){
                         return@Button
                     }
                     viewmodel.addTransaction(

@@ -10,6 +10,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,12 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.financemanagement.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownForReason(
-    viewModel: SettingsViewModel
+    reasonsMap: Map<String, String>,
+    selectedReasonKey: MutableState<String>,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("") }
@@ -51,12 +52,12 @@ fun DropDownForReason(
                 onDismissRequest = { isExpanded = false },
                 modifier = Modifier.background(color = Color.White)
             ){
-                viewModel.reasonsMap.forEach { (key, value) ->
+                reasonsMap.forEach { (_, value) ->
                     DropdownMenuItem(
                         text = { Text(value) },
                         onClick = {
                             selectedItem = value
-                            viewModel.selectedReasonKey = key
+                            selectedReasonKey.value = value
                             isExpanded = false
                         }
                     )

@@ -101,7 +101,10 @@ fun SettingsView(
                 Text(text = "Update Reason", style = TextStyle(fontSize = 18.sp))
             }
 
-            DropDownForReason(viewModel = viewmodel)
+            DropDownForReason(
+                reasonsMap = viewmodel.reasonsMap,
+                selectedReasonKey = viewmodel.selectedReasonKey
+            )
 
             if (showDialog) {
                 SettingsViewDialog(

@@ -17,17 +17,19 @@ fun SettingsViewDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             Button(onClick = {
-                if(title == "Add Reason"){
-                viewmodel.addReason(onSuccess = {}, onFailure = {})
-                viewmodel.reason = ""
-                onDismissRequest()
-                }else if(title == "Delete Reason"){
-                    viewmodel.deleteReason(onSuccess = {}, onFailure = {})
-                    onDismissRequest()
-                }else{
-                    viewmodel.updateReason(onSuccess = {}, onFailure = {})
-                    onDismissRequest()
+                when (title) {
+                    "Add Reason" -> {
+                        viewmodel.addReason(onSuccess = {}, onFailure = {})
+                        viewmodel.reason = ""
+                    }
+                    "Delete Reason" -> {
+                        viewmodel.deleteReason(onSuccess = {}, onFailure = {})
+                    }
+                    "Update Reason" -> {
+                        viewmodel.updateReason(onSuccess = {}, onFailure = {})
+                    }
                 }
+                onDismissRequest()
             }) {
                 Text("Confirm")
             }
@@ -53,7 +55,7 @@ fun SettingsViewDialog(
 
                     Text(text = "Select a reason to delete")
 
-                    DropDownForReason(viewModel = viewmodel)
+                    DropDownForReason(reasonsMap = viewmodel.reasonsMap, selectedReasonKey = viewmodel.selectedReasonKey)
 
                 }
             }else{
@@ -61,7 +63,7 @@ fun SettingsViewDialog(
 
                     Text(text = "Select a reason to update")
 
-                    DropDownForReason(viewModel = viewmodel)
+                    DropDownForReason(reasonsMap = viewmodel.reasonsMap, selectedReasonKey = viewmodel.selectedReasonKey)
 
                     InputTextField(
                         label = "Update Reason",
