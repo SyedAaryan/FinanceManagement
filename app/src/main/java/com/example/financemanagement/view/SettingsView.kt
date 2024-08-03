@@ -25,6 +25,7 @@ import com.example.financemanagement.R
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.DropDownForReason
 import com.example.financemanagement.view.components.InputTextField
+import com.example.financemanagement.view.components.alertdialogs.AddReasonDialog
 import com.example.financemanagement.viewmodel.SettingsViewModel
 
 @Composable
@@ -107,14 +108,40 @@ fun SettingsView(
             )
 
             if (showDialog) {
-                SettingsViewDialog(
-                    title = dialogTitle,
-                    onDismissRequest = {
-                        showDialog = false
+                when (dialogTitle) {
+                    "Add Reason" -> {
+                        AddReasonDialog(
+                            reason = viewmodel.reason,
+                            onReasonChanged = { viewmodel.reason = it },
+                            onAddReason = {
+                                viewmodel.addReason(onSuccess = {}, onFailure = {})
+                                viewmodel.reason = ""
+                            },
+                            onDismissRequest = {
+                                showDialog = false
+                            }
+                        )
                     }
-                )
+                    "Delete Reason" -> {
+                        SettingsViewDialog(
+                            title = dialogTitle,
+                            viewmodel = viewmodel,
+                            onDismissRequest = {
+                                showDialog = false
+                            }
+                        )
+                    }
+                    "Update Reason" -> {
+                        SettingsViewDialog(
+                            title = dialogTitle,
+                            viewmodel = viewmodel,
+                            onDismissRequest = {
+                                showDialog = false
+                            }
+                        )
+                    }
+                }
             }
         }
     }
 }
-
