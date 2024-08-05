@@ -26,6 +26,8 @@ import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.DropDownForReason
 import com.example.financemanagement.view.components.InputTextField
 import com.example.financemanagement.view.components.alertdialogs.AddReasonDialog
+import com.example.financemanagement.view.components.alertdialogs.DeleteReasonDialog
+import com.example.financemanagement.view.components.alertdialogs.UpdateReasonDialog
 import com.example.financemanagement.viewmodel.SettingsViewModel
 
 @Composable
@@ -122,19 +124,34 @@ fun SettingsView(
                             }
                         )
                     }
+                    //Need to fix this TODO
                     "Delete Reason" -> {
-                        SettingsViewDialog(
-                            title = dialogTitle,
-                            viewmodel = viewmodel,
+                        DeleteReasonDialog(
+                            reasonsMap = viewmodel.reasonsMap,
+                            selectedReasonKey = viewmodel.selectedReasonKey,
+                            onDeleteReason = {
+                                viewmodel.deleteReason(
+                                    onSuccess = {},
+                                    onFailure = {}
+                                )
+                            },
                             onDismissRequest = {
                                 showDialog = false
                             }
                         )
                     }
                     "Update Reason" -> {
-                        SettingsViewDialog(
-                            title = dialogTitle,
-                            viewmodel = viewmodel,
+                        UpdateReasonDialog(
+                            newReason = viewmodel.newReason,
+                            reasonsMap = viewmodel.reasonsMap,
+                            selectedReasonKey = viewmodel.selectedReasonKey,
+                            onNewReasonChanged = { viewmodel.newReason = it },
+                            onUpdateReason = {
+                                viewmodel.updateReason(
+                                    onSuccess = { println("Reason updated successfully") },
+                                    onFailure = { println("Failed to update reason") }
+                                )
+                            },
                             onDismissRequest = {
                                 showDialog = false
                             }

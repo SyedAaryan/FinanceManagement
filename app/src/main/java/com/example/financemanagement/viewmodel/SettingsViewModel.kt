@@ -43,6 +43,7 @@ class SettingsViewModel: ViewModel() {
     }
 
     fun deleteReason(onSuccess: () -> Unit, onFailure: () -> Unit){
+        println("deleteReason called with key: ${selectedReasonKey.value}")
         viewModelScope.launch {
             try {
                 ReasonRepository.deleteReason(selectedReasonKey.value)
