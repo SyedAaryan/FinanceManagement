@@ -19,7 +19,6 @@ fun DeleteReasonDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             Button(onClick = {
-                println("Deleting reason with key: ${selectedReasonKey.value}")
                 onDeleteReason()
                 onDismissRequest()
             }) {

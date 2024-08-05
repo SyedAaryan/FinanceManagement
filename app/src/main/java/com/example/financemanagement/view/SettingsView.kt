@@ -1,6 +1,5 @@
 package com.example.financemanagement.view
 
-import com.example.financemanagement.view.components.SettingsViewDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -124,7 +123,6 @@ fun SettingsView(
                             }
                         )
                     }
-                    //Need to fix this TODO
                     "Delete Reason" -> {
                         DeleteReasonDialog(
                             reasonsMap = viewmodel.reasonsMap,
@@ -148,8 +146,8 @@ fun SettingsView(
                             onNewReasonChanged = { viewmodel.newReason = it },
                             onUpdateReason = {
                                 viewmodel.updateReason(
-                                    onSuccess = { println("Reason updated successfully") },
-                                    onFailure = { println("Failed to update reason") }
+                                    onSuccess = {  },
+                                    onFailure = {  }
                                 )
                             },
                             onDismissRequest = {

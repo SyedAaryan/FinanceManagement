@@ -1,7 +1,5 @@
 ReasonRepository work
-Work on the Add, delete and update functions in the ReasonRepository
-Mke a dropdown which is accesssable from settingsview and addtransactionview
-Work on the DeleteReason Functionality
+Fixed the bug where Key is being showed in the Transaction card
 
 
 TO BE DONE NOW

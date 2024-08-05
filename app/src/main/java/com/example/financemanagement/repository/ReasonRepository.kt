@@ -1,6 +1,5 @@
 package com.example.financemanagement.repository
 
-import android.util.Log
 import com.example.financemanagement.services.FirebaseService
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -54,9 +53,7 @@ object ReasonRepository {
                 database.getReference("Users/$uid/Reasons/$key")
                     .removeValue()
                     .await()
-                Log.d("DeleteReason", "Reason with key $key successfully deleted")
             } catch (e: Exception) {
-                Log.e("DeleteReason", "Error deleting reason", e)
                 throw e
             }
         } else {
