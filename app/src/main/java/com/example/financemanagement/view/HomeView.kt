@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.BottomBar
 import com.example.financemanagement.view.components.HomeViewCard
+import com.example.financemanagement.view.components.HomeViewCashCard
 import com.example.financemanagement.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -84,9 +85,12 @@ fun HomeView(
         ) {
             HomeViewCard(viewmodel.salary)
 
+            Spacer(modifier =Modifier.padding(20.dp))
+
+            HomeViewCard(salary =viewmodel.salary)
+
         }
     }
     }
 }
-
 
