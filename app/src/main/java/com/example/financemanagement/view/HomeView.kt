@@ -21,8 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.BottomBar
-import com.example.financemanagement.view.components.HomeViewCard
-import com.example.financemanagement.view.components.HomeViewCashCard
+import com.example.financemanagement.view.components.cards.HomeViewCard
 import com.example.financemanagement.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 

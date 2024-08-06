@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
-import com.example.financemanagement.view.components.TransactionCard
+import com.example.financemanagement.view.components.cards.TransactionCard
 import com.example.financemanagement.view.components.TransactionFloatingButton
 import com.example.financemanagement.viewmodel.TransactionsViewModel
 
@@ -35,7 +35,7 @@ fun TransactionView(
                 .padding(it)
         ){
             items(viewmodel.transactionMap.entries.toList()){ transaction->
-                TransactionCard(transaction = transaction.value)
+                TransactionCard(transaction = transaction.value, reason = viewmodel.reasonsMap[transaction.value.reason])
             }
         }
     }

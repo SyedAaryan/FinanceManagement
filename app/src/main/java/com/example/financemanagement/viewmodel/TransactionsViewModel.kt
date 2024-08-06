@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financemanagement.model.Transactions
+import com.example.financemanagement.repository.ReasonRepository
 import com.example.financemanagement.repository.TransactionRepository
 import kotlinx.coroutines.launch
 import java.time.Instant.ofEpochMilli
@@ -17,10 +18,24 @@ class TransactionsViewModel : ViewModel() {
     var transactionMap by mutableStateOf(mapOf<String, Transactions>())
         private set
 
+    var reasonsMap by mutableStateOf(mapOf<String, String>())
+        private set
+
     init {
         fetchTransactions()
+        fetchReasons();
     }
 
+    private fun fetchReasons() {
+        viewModelScope.launch {
+            ReasonRepository.getReasons(
+                onChange = { reasons ->
+                    reasonsMap = reasons
+                },
+                onFailure = {}
+            )
+        }
+    }
 
     private fun fetchTransactions() {
         viewModelScope.launch {

@@ -1,4 +1,4 @@
-package com.example.financemanagement.view.components
+package com.example.financemanagement.view.components.cards
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +19,7 @@ import java.time.ZoneId
 @Composable
 fun TransactionCard(
     transaction: Transactions? = null,
+    reason: String? = null
 ) {
 
     Card(modifier = Modifier
@@ -29,7 +30,7 @@ fun TransactionCard(
     ) {
         Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
             Text(text = transaction?.date?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate().toString() } ?: "",fontWeight = FontWeight.Bold)
-            Text(text = transaction?.reason?:"")
+            Text(text = reason?:"")
             Text(text = transaction?.amount.toString())
             Text(text = transaction?.method?:"")
         }

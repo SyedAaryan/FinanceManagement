@@ -1,11 +1,7 @@
-ReasonRepository work
-Fixed the bug where Key is being showed in the Transaction card
-
-
 TO BE DONE NOW
-Add features like a Dropdown menu for the AddTransaction screen so that the user can select between common things
-The user should be able ot select the things he want in the drop down menu from the settings
 Add a salary crediting date as well in the settings view
+Add cash and net banking total of the month in the home view
+Add others in the DropDownForReason, which opens an input to type others
 
 
 CAN BE DONE LATER

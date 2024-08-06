@@ -1,4 +1,4 @@
-package com.example.financemanagement.view.components
+package com.example.financemanagement.view.components.cards
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.financemanagement.R
 
 @Composable
-fun HomeViewCard (
+fun HomeViewCashCard (
     salary: Int
 ){
 
