@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,12 +23,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.financemanagement.R
 import com.example.financemanagement.view.components.AppBar
+import com.example.financemanagement.view.components.DatePicker
 import com.example.financemanagement.view.components.DropDownForReason
 import com.example.financemanagement.view.components.InputTextField
 import com.example.financemanagement.view.components.alertdialogs.AddReasonDialog
 import com.example.financemanagement.view.components.alertdialogs.DeleteReasonDialog
 import com.example.financemanagement.view.components.alertdialogs.UpdateReasonDialog
 import com.example.financemanagement.viewmodel.SettingsViewModel
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 @Composable
 fun SettingsView(
@@ -37,6 +42,7 @@ fun SettingsView(
 
     var showDialog by remember { mutableStateOf(false) }
     var dialogTitle by remember { mutableStateOf("") }
+    val showDatePicker = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -61,9 +67,10 @@ fun SettingsView(
                 }
             )
 
+
             Button(
                 onClick = {
-                    viewmodel.addSalary(
+                    viewmodel.addRemainingSalary(
                         onSuccess = {
 
                         },

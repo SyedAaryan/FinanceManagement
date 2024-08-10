@@ -86,7 +86,6 @@ fun HomeView(
 
             Spacer(modifier =Modifier.padding(20.dp))
 
-            HomeViewCard(salary =viewmodel.salary)
 
         }
     }

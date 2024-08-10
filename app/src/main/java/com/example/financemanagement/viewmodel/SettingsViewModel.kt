@@ -20,10 +20,11 @@ class SettingsViewModel: ViewModel() {
     var reasonsMap by mutableStateOf(mapOf<String, String>())
         private set
 
-    fun addSalary(onSuccess: () -> Unit, onFailure: () -> Unit) {
+    //the function addRemainingSalary and addSalaryDate may be confusing, explanation is at the end of this file
+    fun addRemainingSalary(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
             try {
-                SalaryRepository.addSalary(salary.toInt())
+                SalaryRepository.addRemainingSalary(salary.toInt())
                 onSuccess()
             } catch (e: Exception) {
                 onFailure()
@@ -81,4 +82,19 @@ class SettingsViewModel: ViewModel() {
     }
 
 }
+
+/*syedaaryan explanation(10/08/2024):
+*     So i was working on the function where the user can add the salaryDate in the DB, so that when
+* the same date arrives next month, the salary resets, before this the salary was pushed as "salary"
+* in teh DB, but i have decided to change the structure a bit
+* addRemainingSalary is the function that pushes the salary as "remainingSalary "in the DB, and
+* addSalaryDate is the function that salary and salaryDate in the DB. And this will remain constant,
+* but the "remaining salary" will be
+* Ill also be using only one variable as "salary" in the settinsgView and SettinsgVM to make it easier
+* This may change in the other VMs
+* Idk if this is smart or an idiotic move, lets see how it works, change the counter
+* Its an smart move : 1
+* Its an idiotic move : 0
+* */
+
 

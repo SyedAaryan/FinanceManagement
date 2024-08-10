@@ -30,7 +30,7 @@ object TransactionRepository {
                     .await()
 
                 // Fetch current salary and deduct the transaction amount
-                val salaryRef = database.getReference("Users/$uid/salary")
+                val salaryRef = database.getReference("Users/$uid/Remaining Salary")
                 val salarySnapshot = salaryRef.get().await()
                 val currentSalary = salarySnapshot.getValue(Int::class.java) ?: 0
                 val newSalary = currentSalary - amount

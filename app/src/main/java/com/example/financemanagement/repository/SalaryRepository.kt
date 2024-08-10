@@ -10,12 +10,12 @@ object SalaryRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
 
-    suspend fun addSalary(salary: Int) {
+    suspend fun addRemainingSalary(salary: Int) {
         val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             try {
-                database.getReference("Users/$uid/salary")
+                database.getReference("Users/$uid/Remaining Salary")
                     .setValue(salary)
                     .await()
             } catch (e: Exception) {
@@ -30,7 +30,7 @@ object SalaryRepository {
         val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
-            database.getReference("Users/$uid/salary")
+            database.getReference("Users/$uid/Remaining Salary")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val salary = snapshot.getValue(Int::class.java)
