@@ -15,16 +15,30 @@ class SettingsViewModel: ViewModel() {
     var reason by mutableStateOf("")
     val selectedReasonKey = mutableStateOf("")
     var newReason by mutableStateOf("")
+    var salaryDate: Long? by mutableStateOf(null)
 
 
     var reasonsMap by mutableStateOf(mapOf<String, String>())
         private set
 
     //the function addRemainingSalary and addSalaryDate may be confusing, explanation is at the end of this file
+    //This doesnt remain constant and transactions interact with this
     fun addRemainingSalary(onSuccess: () -> Unit, onFailure: () -> Unit) {
         viewModelScope.launch {
             try {
                 SalaryRepository.addRemainingSalary(salary.toInt())
+                onSuccess()
+            } catch (e: Exception) {
+                onFailure()
+            }
+        }
+    }
+
+    //this function saves the salary and date in teh DB, but this remains constant and transactions doesnt affect this
+    fun addSalaryDate(onSuccess: () -> Unit, onFailure: () -> Unit) {
+        viewModelScope.launch {
+            try {
+                SalaryRepository.addSalaryDate(salary.toInt(), salaryDate ?: 0L)
                 onSuccess()
             } catch (e: Exception) {
                 onFailure()

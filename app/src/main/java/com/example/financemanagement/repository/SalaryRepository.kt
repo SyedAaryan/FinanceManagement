@@ -26,6 +26,26 @@ object SalaryRepository {
         }
     }
 
+    suspend fun addSalaryDate(salary: Int,date: Long) {
+        val user = FirebaseService.user
+        if (user != null) {
+            val uid = user.uid
+            try {
+                database.getReference("Users/$uid/Salary and Date/Salary")
+                    .setValue(salary)
+                    .await()
+
+                database.getReference("Users/$uid/Salary and Date/Date")
+                    .setValue(date)
+                    .await()
+            } catch (e: Exception) {
+                throw e
+            }
+        } else {
+            throw IllegalStateException("User is not authenticated.")
+        }
+    }
+
     fun getSalary(onChange: (Int) -> Unit, onFailure: (Exception) -> Unit){
         val user = FirebaseService.user
         if (user != null) {

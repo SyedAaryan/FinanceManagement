@@ -67,10 +67,37 @@ fun SettingsView(
                 }
             )
 
+            OutlinedButton(
+                onClick = {
+                    showDatePicker.value = true
+                }
+            ) {
+                Text(viewmodel.salaryDate?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate().toString() } ?: "Select Date")
+            }
+
+            DatePicker(
+                openDialog = showDatePicker,
+                onDateSelected = { selectedDate ->
+                    viewmodel.salaryDate = selectedDate
+                }
+            )
+
+
 
             Button(
                 onClick = {
+                    if(viewmodel.salary.isEmpty() || viewmodel.salaryDate == null){
+                        return@Button
+                    }
                     viewmodel.addRemainingSalary(
+                        onSuccess = {
+
+                        },
+                        onFailure = {
+
+                        }
+                    )
+                    viewmodel.addSalaryDate(
                         onSuccess = {
 
                         },
