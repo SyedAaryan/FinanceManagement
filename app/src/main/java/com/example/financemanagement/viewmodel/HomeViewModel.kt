@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.financemanagement.repository.CashNetBRepository
 import com.example.financemanagement.repository.SalaryRepository
+import com.example.financemanagement.repository.TransactionRepository
 import com.example.financemanagement.services.FirebaseService
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -65,7 +65,7 @@ class HomeViewModel : ViewModel() {
     private fun getTotalNetBTransactions() {
         viewModelScope.launch {
             try {
-                val total = CashNetBRepository.getTransactionByMethod(CashNetBRepository.TransactionMethod.NetBanking)
+                val total = TransactionRepository.getTransactionByMethod(TransactionRepository.TransactionMethod.NetBanking)
                  totalNetBTransactions = total.toInt()
             } catch (e: Exception) {
                 // Handle exception
@@ -76,7 +76,7 @@ class HomeViewModel : ViewModel() {
     private fun getTotalCashTransactions() {
         viewModelScope.launch {
             try {
-                val total = CashNetBRepository.getTransactionByMethod(CashNetBRepository.TransactionMethod.Cash)
+                val total = TransactionRepository.getTransactionByMethod(TransactionRepository.TransactionMethod.Cash)
                 totalCashTransactions = total.toInt()
             } catch (e: Exception) {
                 // Handle exception
