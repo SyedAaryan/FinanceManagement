@@ -13,23 +13,22 @@ import androidx.compose.ui.unit.dp
 import com.example.financemanagement.R
 
 @Composable
-fun HomeViewCashCard (
+fun HomeViewNetBCard (
     salary: Int
-){
+) {
 
-    Card (
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 8.dp, end = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.AppLightGreen))
-    ){
-        Column (modifier = Modifier.padding(60.dp).fillMaxWidth()){
+    ) {
+        Column(modifier = Modifier.padding(60.dp).fillMaxWidth()) {
             Text(text = salary.toString())
         }
     }
-
 }
 
-//This card fetches the cash transactions of this month displays the total value
-//It is clickable and the view shows the list of cash transactions of this month
+//This card fetches the netBanking transactions of this month displays the total value
+//It is clickable and the view shows the list of netBanking transactions of this month

@@ -1,21 +1,19 @@
 Currently Working
-Add the addSalaryDate fuction in the settings view/ make changes in the repository and viewmodel
-
+Adding Net Banking and cash cards in teh home view
 
 TO BE DONE NOW
-Add a salary crediting date as well in the settings view
 Add cash and net banking total of the month in the home view
 Add others in the DropDownForReason, which opens an input to type others
 
 
 CAN BE DONE LATER
+The Remaining Salary still in Beta ()It refreshes only when we restart the app so fix it
 Add a remember me check box in the Login Screen with data store
 Make the salary type as int and not String (it takes as string and converts to int, change it maybe ?)
 Make it so that each transaction are clickable ? And add other feature?
+Fetching and Pushing should be done as Suspend Function?
+Make the filtering of data happen in the repository and not in the ViewModel for performance
 
-IDEAS
-Use a dummy salary data to display in the homeView card and make a function which reduced the money and updates in the database
-In the homeView, below the Big card we can add money spent in Net Banking and cash
 
 UI
 Work on all the UI

@@ -22,6 +22,8 @@ import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.BottomBar
 import com.example.financemanagement.view.components.cards.HomeViewCard
+import com.example.financemanagement.view.components.cards.HomeViewCashCard
+import com.example.financemanagement.view.components.cards.HomeViewNetBCard
 import com.example.financemanagement.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -67,28 +69,38 @@ fun HomeView(
             }
         }
     ){
-    Scaffold(
-        topBar = {
-            AppBar(
-                title = "Finance Management",
-                drawerState = drawerState,
-                coroutineScope = coroutineScope,
-                navController = navController)
-        },
-        bottomBar = { BottomBar(navController) }
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
+        Scaffold(
+            topBar = {
+                AppBar(
+                    title = "Finance Management",
+                    drawerState = drawerState,
+                    coroutineScope = coroutineScope,
+                    navController = navController)
+            },
+            bottomBar = { BottomBar(navController) }
         ) {
-            HomeViewCard(viewmodel.salary)
+            Box(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxSize()
+                ) {
+                    HomeViewCard(viewmodel.salary)
 
-            Spacer(modifier =Modifier.padding(20.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
+                    HomeViewCashCard(salary = 12)
 
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    HomeViewNetBCard(viewmodel.totalNetBTransactions)
+                }
+            }
         }
-    }
     }
 }
 

@@ -37,6 +37,7 @@ class TransactionsViewModel : ViewModel() {
         }
     }
 
+    //Change it later so that repository filters the month and not the viewmodel
     private fun fetchTransactions() {
         viewModelScope.launch {
             TransactionRepository.getTransactions(

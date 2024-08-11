@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.financemanagement.repository.CashNetBRepository
 import com.example.financemanagement.repository.SalaryRepository
 import com.example.financemanagement.services.FirebaseService
 import kotlinx.coroutines.launch
@@ -15,11 +16,12 @@ import java.time.ZoneId
 class HomeViewModel : ViewModel() {
 
     var salary by mutableIntStateOf(0)
+    var totalNetBTransactions by mutableIntStateOf(0)
 
     init {
         fetchSalary()
         checkAndUpdateSalary()
-
+        getTotalNetBTransactions()
     }
 
     private fun fetchSalary() {
@@ -41,11 +43,15 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val storedDate = SalaryRepository.getSalaryDate()
-                val storedLocalDate = Instant.ofEpochMilli(storedDate).atZone(ZoneId.systemDefault()).toLocalDate()
+                val storedLocalDate =
+                    Instant.ofEpochMilli(storedDate).atZone(ZoneId.systemDefault()).toLocalDate()
                 val currentDate = LocalDate.now()
                 if (currentDate >= storedLocalDate.plusDays(30)) {
                     val constSalary = SalaryRepository.getConstantSalary()
-                    SalaryRepository.updateSalaryDateAndRemainingSalary(currentDate.toEpochDay() * 86400000, constSalary)
+                    SalaryRepository.updateSalaryDateAndRemainingSalary(
+                        currentDate.toEpochDay() * 86400000,
+                        constSalary
+                    )
                 }
             } catch (e: Exception) {
                 // Handle exception
@@ -54,4 +60,14 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    private fun getTotalNetBTransactions() {
+        viewModelScope.launch {
+            try {
+                val total = CashNetBRepository.getTotalNetBTransactions()
+                 totalNetBTransactions = total.toInt()
+            } catch (e: Exception) {
+                // Handle exception
+            }
+        }
+    }
 }
