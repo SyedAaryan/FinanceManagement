@@ -17,11 +17,13 @@ class HomeViewModel : ViewModel() {
 
     var salary by mutableIntStateOf(0)
     var totalNetBTransactions by mutableIntStateOf(0)
+    var totalCashTransactions by mutableIntStateOf(0)
 
     init {
         fetchSalary()
         checkAndUpdateSalary()
         getTotalNetBTransactions()
+        getTotalCashTransactions()
     }
 
     private fun fetchSalary() {
@@ -65,6 +67,17 @@ class HomeViewModel : ViewModel() {
             try {
                 val total = CashNetBRepository.getTotalNetBTransactions()
                  totalNetBTransactions = total.toInt()
+            } catch (e: Exception) {
+                // Handle exception
+            }
+        }
+    }
+
+    private fun getTotalCashTransactions() {
+        viewModelScope.launch {
+            try {
+                val total = CashNetBRepository.getTotalCashTransactions()
+                totalCashTransactions = total.toInt()
             } catch (e: Exception) {
                 // Handle exception
             }

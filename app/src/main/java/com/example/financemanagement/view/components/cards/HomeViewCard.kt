@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.financemanagement.R
 
 @Composable
@@ -25,6 +26,7 @@ fun HomeViewCard (
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.AppLightGreen))
     ){
         Column (modifier = Modifier.padding(60.dp).fillMaxWidth()){
+            Text(text = "Salary",fontSize = 20.sp)
             Text(text = salary.toString())
         }
     }

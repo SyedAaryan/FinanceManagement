@@ -93,7 +93,7 @@ fun HomeView(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    HomeViewCashCard(salary = 12)
+                    HomeViewCashCard(viewmodel.totalCashTransactions)
 
                     Spacer(modifier = Modifier.height(20.dp))
 

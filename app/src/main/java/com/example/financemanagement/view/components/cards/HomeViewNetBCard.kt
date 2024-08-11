@@ -10,11 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.financemanagement.R
 
 @Composable
 fun HomeViewNetBCard (
-    salary: Int
+    totalNetB: Int
 ) {
 
     Card(
@@ -25,7 +26,8 @@ fun HomeViewNetBCard (
         colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.AppLightGreen))
     ) {
         Column(modifier = Modifier.padding(60.dp).fillMaxWidth()) {
-            Text(text = salary.toString())
+            Text(text = "Net Banking Spent This Month",fontSize = 20.sp)
+            Text(text = totalNetB.toString())
         }
     }
 }

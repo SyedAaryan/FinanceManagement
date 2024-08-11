@@ -53,6 +53,49 @@ object CashNetBRepository {
         }
     }
 
+    //This function fetches the total Cash transactions of the month
+    suspend fun getTotalCashTransactions(): Double {
+        val user = FirebaseService.user
+        if (user != null) {
+            val uid = user.uid
+            try {
+                val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+                val snapshot = database.getReference("Users/$uid/Transactions")
+                    .get()
+                    .await()
+
+                var totalAmount = 0.0
+
+                for (transaction in snapshot.children) {
+                    val method = transaction.child("method").getValue(String::class.java)
+                    val dateEpoch = transaction.child("date").getValue(Long::class.java)
+                    val amount = transaction.child("amount").getValue(Double::class.java)
+
+                    if (method == "Cash" && dateEpoch != null && amount != null) {
+                        val transactionDate = Calendar.getInstance().apply {
+                            timeInMillis = dateEpoch
+                        }
+                        val transactionMonth = transactionDate.get(Calendar.MONTH)
+                        val transactionYear = transactionDate.get(Calendar.YEAR)
+
+                        if (transactionMonth == currentMonth && transactionYear == currentYear) {
+                            totalAmount += amount
+                        }
+                    }
+                }
+
+                return totalAmount
+            } catch (e: Exception) {
+                throw e
+            }
+
+        } else {
+            throw IllegalStateException("User is not authenticated.")
+        }
+    }
+
 
 //    suspend fun getNetBTransactions(): Map<String, Transactions> {
 //        val user = FirebaseService.user
