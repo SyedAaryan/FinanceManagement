@@ -65,7 +65,7 @@ class HomeViewModel : ViewModel() {
     private fun getTotalNetBTransactions() {
         viewModelScope.launch {
             try {
-                val total = CashNetBRepository.getTotalNetBTransactions()
+                val total = CashNetBRepository.getTransactionByMethod(CashNetBRepository.TransactionMethod.NetBanking)
                  totalNetBTransactions = total.toInt()
             } catch (e: Exception) {
                 // Handle exception
@@ -76,7 +76,7 @@ class HomeViewModel : ViewModel() {
     private fun getTotalCashTransactions() {
         viewModelScope.launch {
             try {
-                val total = CashNetBRepository.getTotalCashTransactions()
+                val total = CashNetBRepository.getTransactionByMethod(CashNetBRepository.TransactionMethod.Cash)
                 totalCashTransactions = total.toInt()
             } catch (e: Exception) {
                 // Handle exception

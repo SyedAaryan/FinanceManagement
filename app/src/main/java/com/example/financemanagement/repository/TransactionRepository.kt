@@ -47,7 +47,7 @@ object TransactionRepository {
         }
     }
 
-    fun getTransactions(
+    fun listenTransactions(
         onChange: (Map<String, Transactions>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -74,5 +74,15 @@ object TransactionRepository {
                     }
                 })
         }
+    }
+
+    suspend fun getTransactions(): DataSnapshot {
+        val user = FirebaseService.user;
+        if (user != null) {
+            val uid = user.uid
+            return database.getReference("Users/$uid/Transactions")
+                .get().await()
+        }
+        throw RuntimeException("User is not authenticated.");
     }
 }
