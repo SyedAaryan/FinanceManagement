@@ -1,8 +1,9 @@
 Currently Working
-Adding Net Banking and cash cards in teh home view
+
 
 TO BE DONE NOW
-Add cash and net banking total of the month in the home view
+Work on fetching reason from the DB
+Work on showing card and cash only transaction when the user clicks the card
 Add others in the DropDownForReason, which opens an input to type others
 
 
