@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.tasks.await
+import java.util.Calendar
 
 object TransactionRepository {
 
@@ -47,7 +48,7 @@ object TransactionRepository {
         }
     }
 
-    fun getTransactions(
+    fun listenTransactions(
         onChange: (Map<String, Transactions>) -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -73,6 +74,62 @@ object TransactionRepository {
                         onFailure(Exception(error.message))
                     }
                 })
+        }
+    }
+
+    private suspend fun getTransactionsSnapshot(): DataSnapshot {
+        val user = FirebaseService.user;
+        if (user != null) {
+            val uid = user.uid
+            return database.getReference("Users/$uid/Transactions")
+                .get().await()
+        }
+        throw IllegalStateException("User is not authenticated.");
+    }
+
+    enum class TransactionMethod(private val method: String) {
+        Cash("Cash"),
+        NetBanking("Net Banking");
+
+        override fun toString(): String = method
+    }
+
+    suspend fun getTransactionByMethod(transactionMethod: TransactionMethod) : Double {
+        val user = FirebaseService.user
+        if (user != null) {
+            try {
+                val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+                val snapshot = getTransactionsSnapshot()
+
+                var totalAmount = 0.0
+
+                for (transaction in snapshot.children) {
+                    val method = transaction.child("method").getValue(String::class.java)
+                    val dateEpoch = transaction.child("date").getValue(Long::class.java)
+                    val amount = transaction.child("amount").getValue(Double::class.java)
+
+                    if (method == transactionMethod.toString() && dateEpoch != null && amount != null) {
+                        val transactionDate = Calendar.getInstance().apply {
+                            timeInMillis = dateEpoch
+                        }
+                        val transactionMonth = transactionDate.get(Calendar.MONTH)
+                        val transactionYear = transactionDate.get(Calendar.YEAR)
+
+                        if (transactionMonth == currentMonth && transactionYear == currentYear) {
+                            totalAmount += amount
+                        }
+                    }
+                }
+
+                return totalAmount
+            } catch (e: Exception) {
+                throw e
+            }
+
+        } else {
+            throw IllegalStateException("User is not authenticated.")
         }
     }
 }
