@@ -31,7 +31,7 @@ object TransactionRepository {
                     .await()
 
                 // Fetch current salary and deduct the transaction amount
-                val salaryRef = database.getReference("Users/$uid/Remaining Salary")
+                val salaryRef = database.getReference("Users/$uid/Salary/Remaining")
                 val salarySnapshot = salaryRef.get().await()
                 val currentSalary = salarySnapshot.getValue(Int::class.java) ?: 0
                 val newSalary = currentSalary - amount
@@ -78,13 +78,13 @@ object TransactionRepository {
     }
 
     private suspend fun getTransactionsSnapshot(): DataSnapshot {
-        val user = FirebaseService.user;
+        val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
             return database.getReference("Users/$uid/Transactions")
                 .get().await()
         }
-        throw IllegalStateException("User is not authenticated.");
+        throw IllegalStateException("User is not authenticated.")
     }
 
     enum class TransactionMethod(private val method: String) {
@@ -122,7 +122,6 @@ object TransactionRepository {
                         }
                     }
                 }
-
                 return totalAmount
             } catch (e: Exception) {
                 throw e

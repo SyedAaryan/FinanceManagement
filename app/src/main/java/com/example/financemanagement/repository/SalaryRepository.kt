@@ -16,7 +16,7 @@ object SalaryRepository {
         if (user != null) {
             val uid = user.uid
             try {
-                database.getReference("Users/$uid/Remaining Salary")
+                database.getReference("Users/$uid/Salary/Remaining")
                     .setValue(salary)
                     .await()
             } catch (e: Exception) {
@@ -32,11 +32,11 @@ object SalaryRepository {
         if (user != null) {
             val uid = user.uid
             try {
-                database.getReference("Users/$uid/Salary and Date/Salary")
+                database.getReference("Users/$uid/Salary/Initial Salary")
                     .setValue(salary)
                     .await()
 
-                database.getReference("Users/$uid/Salary and Date/Date")
+                database.getReference("Users/$uid/Salary/Date")
                     .setValue(date)
                     .await()
             } catch (e: Exception) {
@@ -51,7 +51,7 @@ object SalaryRepository {
         val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
-            database.getReference("Users/$uid/Remaining Salary")
+            database.getReference("Users/$uid/Salary/Remaining")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val salary = snapshot.getValue(Int::class.java)
@@ -70,7 +70,7 @@ object SalaryRepository {
         if (user != null) {
             val uid = user.uid
             try {
-                val snapshot = database.getReference("Users/$uid/Salary and Date")
+                val snapshot = database.getReference("Users/$uid/Salary")
                     .get().
                     await()
 
@@ -91,7 +91,7 @@ object SalaryRepository {
         if (user != null) {
             val uid = user.uid
             try {
-                val snapshot = database.getReference("Users/$uid/Salary and Date")
+                val snapshot = database.getReference("Users/$uid/Salary")
                     .get().
                     await()
 
@@ -112,10 +112,10 @@ object SalaryRepository {
         if (user != null) {
             val uid = user.uid
             try {
-                database.getReference("Users/$uid/Salary and Date/Date")
+                database.getReference("Users/$uid/Salary/Date")
                     .setValue(newDate)
                     .await()
-                database.getReference("Users/$uid/Remaining Salary")
+                database.getReference("Users/$uid/Salary/Remaining")
                     .setValue(newAmount)
                     .await()
             } catch (e: Exception) {

@@ -23,7 +23,7 @@ class TransactionsViewModel : ViewModel() {
 
     init {
         fetchTransactions()
-        fetchReasons();
+        fetchReasons()
     }
 
     private fun fetchReasons() {

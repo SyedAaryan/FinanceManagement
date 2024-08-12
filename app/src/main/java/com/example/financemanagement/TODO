@@ -1,5 +1,7 @@
 Currently Working
-
+Make the fetching run on coroutines
+Clear the code
+Chang the Directories
 
 TO BE DONE NOW
 Work on fetching reason from the DB
