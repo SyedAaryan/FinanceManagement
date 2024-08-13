@@ -77,7 +77,6 @@ object ReasonRepository {
             onFailure(Exception("User is not authenticated."))
         }
 
-
     }
 
 }

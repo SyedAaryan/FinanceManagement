@@ -1,4 +1,5 @@
 Currently Working
+Transactions are not being shown in the TransactionView, fix it
 Make the fetching run on coroutines
 Clear the code
 Chang the Directories

@@ -66,10 +66,9 @@ object TransactionRepository {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     snapshot.children.forEach { dataSnapshot ->
                         dataSnapshot.key?.let { id ->
-                            dataSnapshot.getValue(Transactions::class.java)
-                                ?.let { transaction ->
+                            dataSnapshot.getValue(Transactions::class.java)?.let { transaction ->
                                     transactions[id] = transaction
-                                }
+                            }
                         }
                     }
                     onChange(transactions)
@@ -111,10 +110,9 @@ object TransactionRepository {
                 val snapshot = getTransactionsSnapshot()
                 snapshot.children.forEach { dataSnapshot ->
                     dataSnapshot.key?.let { id ->
-                        dataSnapshot.getValue(Transactions::class.java)
-                            ?.let { transaction ->
+                        dataSnapshot.getValue(Transactions::class.java)?.let { transaction ->
                                 transactions[id] = transaction
-                            }
+                        }
                     }
                 }
             }

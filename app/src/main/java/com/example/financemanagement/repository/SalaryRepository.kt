@@ -28,12 +28,8 @@ object SalaryRepository {
         val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
         val uid = user.uid
         try {
-            database.getReference("Users/$uid/Salary/Initial Salary")
-                .setValue(salary)
-                .await()
-
-            database.getReference("Users/$uid/Salary/Date")
-                .setValue(date)
+            database.getReference("Users/$uid/Salary")
+                .updateChildren(mapOf("Initial Salary" to salary, "Date" to date) )
                 .await()
         } catch (e: Exception) {
             throw e
@@ -62,29 +58,26 @@ object SalaryRepository {
         val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
         val uid = user.uid
         try {
-            val snapshot = database.getReference("Users/$uid/Salary")
+            val dateMillis = database.getReference("Users/$uid/Salary/Date")
                 .get().
                 await()
-
-            val dateMillis = snapshot.child("Date").getValue(Long::class.java) ?: 0L
+                .getValue(Long::class.java) ?: 0L
             return dateMillis
-
         } catch (e: Exception) {
             throw e
         }
 
     }
 
-    //This function is used to get the salary that is stored in the "Salary and Date" from the DB
+    //This function is used to get the Initial salary that is stored in the "Salary" from the DB
     suspend fun getConstantSalary(): Int {
         val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
         val uid = user.uid
         try {
-            val snapshot = database.getReference("Users/$uid/Salary")
+            val constSalary = database.getReference("Users/$uid/Salary/Initial Salary")
                 .get()
                 .await()
-
-            val constSalary = snapshot.child("Salary").getValue(Int::class.java) ?: 0
+                .getValue(Int::class.java) ?: 0
             return constSalary
 
         } catch (e: Exception) {
