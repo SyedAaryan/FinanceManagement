@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financemanagement.repository.ReasonRepository
 import com.example.financemanagement.repository.TransactionRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddTransactionViewModel : ViewModel() {
@@ -36,15 +38,16 @@ class AddTransactionViewModel : ViewModel() {
 
     fun addTransaction(onSuccess: () -> Unit, onFailure: () -> Unit){
         viewModelScope.launch {
-        TransactionRepository.addTransaction(transactionDate?: 0L, selectedReason.value,transactionAmount.toInt(),selectedPaymentMethod,
-            onSuccess = {
-                onSuccess()
-            },
-            onFailure = {
-                onFailure()
-            }
-        )
-    }
+            val result = TransactionRepository
+                .addTransaction(
+                    transactionDate?: 0L,
+                    selectedReason.value,
+                    transactionAmount.toInt(),
+                    selectedPaymentMethod
+                )
+            if (result.isSuccess) onSuccess()
+            else onFailure()
+        }
     }
 
     init {

@@ -2,6 +2,7 @@ Currently Working
 Make the fetching run on coroutines
 Clear the code
 Chang the Directories
+Fix the TotalNetB delay and salary Update per month delay
 
 TO BE DONE NOW
 Work on fetching reason from the DB

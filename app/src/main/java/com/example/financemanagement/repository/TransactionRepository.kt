@@ -12,40 +12,41 @@ object TransactionRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
 
+    private var transactionListener: ValueEventListener? = null
+
+    val transactions = hashMapOf<String, Transactions>()
+
     suspend fun addTransaction(
         date: Long,
         reason: String,
         amount: Int,
         method: String,
-        onSuccess: (key: String) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        val user = FirebaseService.user
-        if (user != null) {
-            val uid = user.uid
-            val key = database.getReference("Users/$uid/Transactions").push().key ?: ""
-            try {
-                // Add transaction to Firebase
-                database.getReference("Users/$uid/Transactions/$key")
-                    .setValue(Transactions(date, reason, amount,method))
-                    .await()
+    ) : Result<Unit> {
 
-                // Fetch current salary and deduct the transaction amount
-                val salaryRef = database.getReference("Users/$uid/Salary/Remaining")
-                val salarySnapshot = salaryRef.get().await()
-                val currentSalary = salarySnapshot.getValue(Int::class.java) ?: 0
-                val newSalary = currentSalary - amount
+        val user = FirebaseService.user ?: return Result.failure(IllegalStateException("User is not authenticated."))
 
-                // Update salary in Firebase
-                salaryRef.setValue(newSalary).await()
+        val uid = user.uid
+        val key = database.getReference("Users/$uid/Transactions").push().key ?: ""
+        try {
+            // Add transaction to Firebase
+            database.getReference("Users/$uid/Transactions/$key")
+                .setValue(Transactions(date, reason, amount,method))
+                .await()
 
-                onSuccess(key)
-            } catch (e: Exception) {
-                onFailure(e)
-            }
-        } else {
-            onFailure(IllegalStateException("User is not authenticated."))
+            // Fetch current salary and deduct the transaction amount
+            val salaryRef = database.getReference("Users/$uid/Salary/Remaining")
+            val salarySnapshot = salaryRef.get().await()
+            val currentSalary = salarySnapshot.getValue(Int::class.java) ?: 0
+            val newSalary = currentSalary - amount
+
+            // Update salary in Firebase
+            salaryRef.setValue(newSalary).await()
+
+            return Result.success(Unit)
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
+
     }
 
     fun listenTransactions(
@@ -55,25 +56,31 @@ object TransactionRepository {
         val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
-            database.getReference("Users/$uid/Transactions")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val transactions = hashMapOf<String, Transactions>()
-                        snapshot.children.forEach { dataSnapshot ->
-                            dataSnapshot.key?.let { id ->
-                                dataSnapshot.getValue(Transactions::class.java)
-                                    ?.let { transaction ->
-                                        transactions[id] = transaction
-                                    }
-                            }
-                        }
-                        onChange(transactions)
-                    }
+            val reference = database.getReference("Users/$uid/Transactions")
 
-                    override fun onCancelled(error: DatabaseError) {
-                        onFailure(Exception(error.message))
+            transactionListener?.let { listener ->
+                reference.removeEventListener(listener)
+            }
+
+            transactionListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach { dataSnapshot ->
+                        dataSnapshot.key?.let { id ->
+                            dataSnapshot.getValue(Transactions::class.java)
+                                ?.let { transaction ->
+                                    transactions[id] = transaction
+                                }
+                        }
                     }
-                })
+                    onChange(transactions)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onFailure(Exception(error.message))
+                }
+            }
+
+            reference.addValueEventListener(transactionListener as ValueEventListener)
         }
     }
 
@@ -100,16 +107,26 @@ object TransactionRepository {
             val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
-            val snapshot = getTransactionsSnapshot()
+            if (transactionListener == null) {
+                val snapshot = getTransactionsSnapshot()
+                snapshot.children.forEach { dataSnapshot ->
+                    dataSnapshot.key?.let { id ->
+                        dataSnapshot.getValue(Transactions::class.java)
+                            ?.let { transaction ->
+                                transactions[id] = transaction
+                            }
+                    }
+                }
+            }
 
             var totalAmount = 0.0
 
-            for (transaction in snapshot.children) {
-                val method = transaction.child("method").getValue(String::class.java)
-                val dateEpoch = transaction.child("date").getValue(Long::class.java)
-                val amount = transaction.child("amount").getValue(Double::class.java)
+            for (transaction in transactions) {
+                val method = transaction.value.method
+                val dateEpoch = transaction.value.date
+                val amount = transaction.value.amount
 
-                if (method == transactionMethod.toString() && dateEpoch != null && amount != null) {
+                if (method == transactionMethod.toString()) {
                     val transactionDate = Calendar.getInstance().apply {
                         timeInMillis = dateEpoch
                     }

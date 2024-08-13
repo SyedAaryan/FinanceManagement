@@ -97,11 +97,8 @@ object SalaryRepository {
         val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
         val uid = user.uid
         try {
-            database.getReference("Users/$uid/Salary/Date")
-                .setValue(newDate)
-                .await()
-            database.getReference("Users/$uid/Salary/Remaining")
-                .setValue(newAmount)
+            database.getReference("Users/$uid/Salary")
+                .updateChildren(mapOf("Date" to newDate, "Remaining" to newAmount))
                 .await()
         } catch (e: Exception) {
             throw e
