@@ -11,53 +11,41 @@ object ReasonRepository {
     private val database by lazy { FirebaseService.firebaseDatabase }
 
     suspend fun addReason(reason: String) {
-        val user = FirebaseService.user
-        if (user != null) {
-            val uid = user.uid
-            val key = database.getReference("Users/$uid/Reasons").push().key ?: ""
-            try {
-                database.getReference("Users/$uid/Reasons/$key")
-                    .setValue(reason)
-                    .await()
-            } catch (e: Exception) {
-                throw e
-            }
-        } else {
-            throw IllegalStateException("User is not authenticated.")
+        val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
+        val uid = user.uid
+        val key = database.getReference("Users/$uid/Reasons").push().key ?: ""
+        try {
+            database.getReference("Users/$uid/Reasons/$key")
+                .setValue(reason)
+                .await()
+        } catch (e: Exception) {
+            throw e
         }
     }
 
     suspend fun updateReason(key: String, newReason: String) {
-        val user = FirebaseService.user
-        if (user != null) {
-            val uid = user.uid
-            try {
-                database.getReference("Users/$uid/Reasons/$key")
-                    .setValue(newReason)
-                    .await()
-            } catch (e: Exception) {
-                throw e
-            }
-        } else {
-            throw IllegalStateException("User is not authenticated.")
+        val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
+        val uid = user.uid
+        try {
+            database.getReference("Users/$uid/Reasons/$key")
+                .setValue(newReason)
+                .await()
+        } catch (e: Exception) {
+            throw e
         }
     }
 
 
 
     suspend fun deleteReason(key: String) {
-        val user = FirebaseService.user
-        if (user != null) {
-            val uid = user.uid
-            try {
-                database.getReference("Users/$uid/Reasons/$key")
-                    .removeValue()
-                    .await()
-            } catch (e: Exception) {
-                throw e
-            }
-        } else {
-            throw IllegalStateException("User is not authenticated.")
+        val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
+        val uid = user.uid
+        try {
+            database.getReference("Users/$uid/Reasons/$key")
+                .removeValue()
+                .await()
+        } catch (e: Exception) {
+            throw e
         }
     }
 

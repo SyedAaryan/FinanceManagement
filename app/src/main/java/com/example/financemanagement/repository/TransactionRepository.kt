@@ -95,40 +95,35 @@ object TransactionRepository {
     }
 
     suspend fun getTransactionByMethod(transactionMethod: TransactionMethod) : Double {
-        val user = FirebaseService.user
-        if (user != null) {
-            try {
-                val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
-                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
+        try {
+            val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
-                val snapshot = getTransactionsSnapshot()
+            val snapshot = getTransactionsSnapshot()
 
-                var totalAmount = 0.0
+            var totalAmount = 0.0
 
-                for (transaction in snapshot.children) {
-                    val method = transaction.child("method").getValue(String::class.java)
-                    val dateEpoch = transaction.child("date").getValue(Long::class.java)
-                    val amount = transaction.child("amount").getValue(Double::class.java)
+            for (transaction in snapshot.children) {
+                val method = transaction.child("method").getValue(String::class.java)
+                val dateEpoch = transaction.child("date").getValue(Long::class.java)
+                val amount = transaction.child("amount").getValue(Double::class.java)
 
-                    if (method == transactionMethod.toString() && dateEpoch != null && amount != null) {
-                        val transactionDate = Calendar.getInstance().apply {
-                            timeInMillis = dateEpoch
-                        }
-                        val transactionMonth = transactionDate.get(Calendar.MONTH)
-                        val transactionYear = transactionDate.get(Calendar.YEAR)
+                if (method == transactionMethod.toString() && dateEpoch != null && amount != null) {
+                    val transactionDate = Calendar.getInstance().apply {
+                        timeInMillis = dateEpoch
+                    }
+                    val transactionMonth = transactionDate.get(Calendar.MONTH)
+                    val transactionYear = transactionDate.get(Calendar.YEAR)
 
-                        if (transactionMonth == currentMonth && transactionYear == currentYear) {
-                            totalAmount += amount
-                        }
+                    if (transactionMonth == currentMonth && transactionYear == currentYear) {
+                        totalAmount += amount
                     }
                 }
-                return totalAmount
-            } catch (e: Exception) {
-                throw e
             }
-
-        } else {
-            throw IllegalStateException("User is not authenticated.")
+            return totalAmount
+        } catch (e: Exception) {
+            throw e
         }
     }
 }
