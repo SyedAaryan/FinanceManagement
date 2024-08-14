@@ -1,5 +1,5 @@
 Currently Working
-Transactions are not being shown in the TransactionView, fix it
+Sort out the Transactions in the TransactionView
 Make the fetching run on coroutines
 Clear the code
 Chang the Directories

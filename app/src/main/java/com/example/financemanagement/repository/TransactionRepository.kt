@@ -6,6 +6,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.tasks.await
+import java.time.Instant
+import java.time.ZoneId
 import java.util.Calendar
 
 object TransactionRepository {
@@ -15,6 +17,9 @@ object TransactionRepository {
     private var transactionListener: ValueEventListener? = null
 
     val transactions = hashMapOf<String, Transactions>()
+
+    private val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+    private val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
     suspend fun addTransaction(
         date: Long,
@@ -64,13 +69,20 @@ object TransactionRepository {
 
             transactionListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    transactions.clear()
                     snapshot.children.forEach { dataSnapshot ->
                         dataSnapshot.key?.let { id ->
                             dataSnapshot.getValue(Transactions::class.java)?.let { transaction ->
+                                val transactionDate = Instant.ofEpochMilli(transaction.date).atZone(
+                                    ZoneId.systemDefault()).toLocalDate()
+
+                                if (transactionDate.year == currentYear && transactionDate.monthValue == currentMonth + 1) {
                                     transactions[id] = transaction
+                                }
                             }
                         }
                     }
+                    println(transactions)
                     onChange(transactions)
                 }
 
@@ -103,8 +115,6 @@ object TransactionRepository {
     suspend fun getTransactionByMethod(transactionMethod: TransactionMethod) : Double {
         FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
         try {
-            val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
-            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
             if (transactionListener == null) {
                 val snapshot = getTransactionsSnapshot()
