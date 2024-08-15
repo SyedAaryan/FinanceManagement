@@ -38,10 +38,13 @@ class TransactionsViewModel : ViewModel() {
         viewModelScope.launch {
             TransactionRepository.listenTransactions(
                 onChange = { transactions ->
-                    transactionMap = transactions
+                    transactionMap = transactions.entries
+                        .sortedByDescending { it.value.date }
+                        .associate { it.key to it.value }
                 },
                 onFailure = {}
             )
         }
     }
+
 }
