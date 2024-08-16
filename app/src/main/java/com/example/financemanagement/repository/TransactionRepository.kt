@@ -29,6 +29,7 @@ object TransactionRepository {
         reason: String,
         amount: Int,
         method: String,
+        methodTotal: String
     ): Result<Unit> {
         val user = FirebaseService.user ?: return Result.failure(IllegalStateException("User is not authenticated."))
 
@@ -48,6 +49,15 @@ object TransactionRepository {
 
             // Update salary in Firebase
             salaryRef.setValue(newSalary).await()
+
+            //This will fetch the Selected Method from the salary Node and update the total amount of the selected method
+
+            val methodRef = database.getReference("Users/$uid/Salary/$methodTotal")
+            val methodSnapshot = methodRef.get().await()
+            val currentMethodTotal = methodSnapshot.getValue(Int::class.java) ?: 0
+            val newMethodTotal = currentMethodTotal + amount
+
+            methodRef.setValue(newMethodTotal).await()
 
             return Result.success(Unit)
         } catch (e: Exception) {

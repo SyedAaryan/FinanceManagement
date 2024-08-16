@@ -6,9 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financemanagement.repository.ReasonRepository
+import com.example.financemanagement.repository.SalaryRepository
 import com.example.financemanagement.repository.TransactionRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddTransactionViewModel : ViewModel() {
@@ -17,6 +16,7 @@ class AddTransactionViewModel : ViewModel() {
     val selectedReason = mutableStateOf("")
     var transactionAmount by mutableStateOf("")
     var selectedPaymentMethod by mutableStateOf("")
+    var selectedMethodTotal by mutableStateOf("")
 
 
     var reasonsMap by mutableStateOf(mapOf<String, String>())
@@ -34,6 +34,11 @@ class AddTransactionViewModel : ViewModel() {
 
     fun onPaymentMethodChange(method: String) {
         selectedPaymentMethod = method
+        selectedMethodTotal = when (method) {
+            TransactionRepository.TransactionMethod.Cash.toString() -> SalaryRepository.TotalAmount.TotalCash.toString()
+            TransactionRepository.TransactionMethod.NetBanking.toString()-> SalaryRepository.TotalAmount.TotalNetBanking.toString()
+            else -> ""
+        }
     }
 
     fun addTransaction(onSuccess: () -> Unit, onFailure: () -> Unit){
@@ -43,7 +48,8 @@ class AddTransactionViewModel : ViewModel() {
                     transactionDate?: 0L,
                     selectedReason.value,
                     transactionAmount.toInt(),
-                    selectedPaymentMethod
+                    selectedPaymentMethod,
+                    selectedMethodTotal
                 )
             if (result.isSuccess) onSuccess()
             else onFailure()

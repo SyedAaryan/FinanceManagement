@@ -11,6 +11,13 @@ object SalaryRepository {
 
     private val database by lazy { FirebaseService.firebaseDatabase }
 
+    enum class TotalAmount(private val total: String) {
+        TotalCash("Total Cash"),
+        TotalNetBanking("Total Net Banking");
+
+        override fun toString(): String = total
+    }
+
     suspend fun addRemainingSalary(salary: Int) {
         val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
         val uid = user.uid
@@ -91,7 +98,11 @@ object SalaryRepository {
         val uid = user.uid
         try {
             database.getReference("Users/$uid/Salary")
-                .updateChildren(mapOf("Date" to newDate, "Remaining" to newAmount))
+                .updateChildren(mapOf(
+                    "Date" to newDate,
+                    "Remaining" to newAmount,
+                    TotalAmount.TotalCash.toString() to 0,
+                    TotalAmount.TotalNetBanking.toString() to 0))
                 .await()
         } catch (e: Exception) {
             throw e

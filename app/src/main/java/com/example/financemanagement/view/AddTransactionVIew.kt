@@ -30,6 +30,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import com.example.financemanagement.R
+import com.example.financemanagement.repository.TransactionRepository
 import com.example.financemanagement.view.components.DropDownForReason
 import com.example.financemanagement.view.components.RadioButtonGroup
 
@@ -91,7 +92,9 @@ fun AddTransactionView(
             Text("Payment Method", style = TextStyle(fontSize = 16.sp))
 
             RadioButtonGroup(
-                options = listOf("Net Banking", "Cash"),
+                options = listOf(
+                    TransactionRepository.TransactionMethod.Cash.toString(),
+                    TransactionRepository.TransactionMethod.NetBanking.toString()),
                 selectedOption = viewmodel.selectedPaymentMethod,
                 onOptionSelected = {
                     viewmodel.onPaymentMethodChange(it)
