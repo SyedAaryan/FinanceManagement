@@ -43,23 +43,29 @@ object SalaryRepository {
         }
     }
 
-    fun getSalary(onChange: (Int) -> Unit, onFailure: (Exception) -> Unit){
+    fun getSalary(onChange: (Int, Int, Int) -> Unit, onFailure: (Exception) -> Unit) {
         val user = FirebaseService.user
         if (user != null) {
             val uid = user.uid
-            database.getReference("Users/$uid/Salary/Remaining")
+            database.getReference("Users/$uid/Salary")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val salary = snapshot.getValue(Int::class.java)
-                        onChange(salary ?: 0)
+                        val remaining = snapshot.child("Remaining").getValue(Int::class.java) ?: 0
+                        val cash = snapshot.child(TotalAmount.TotalCash.toString()).getValue(Int::class.java) ?: 0
+                        val netBanking = snapshot.child(TotalAmount.TotalNetBanking.toString()).getValue(Int::class.java) ?: 0
+
+                        onChange(remaining, cash, netBanking)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        onFailure(Exception("Failed to get salary"))
+                        onFailure(Exception("Failed to get salary information"))
                     }
-                })
+                }
+            )
         }
     }
+
+
 
     suspend fun getSalaryDate(): Long {
         val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")

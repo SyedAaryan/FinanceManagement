@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financemanagement.repository.SalaryRepository
-import com.example.financemanagement.repository.TransactionRepository
 import com.example.financemanagement.services.FirebaseService
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -20,22 +19,26 @@ class HomeViewModel : ViewModel() {
     var totalCashTransactions by mutableIntStateOf(0)
 
     init {
-        fetchSalary()
+        fetchSalaryAndTotalMethods()
         checkAndUpdateSalary()
-        getTotalNetBTransactions()
-        getTotalCashTransactions()
     }
 
-    private fun fetchSalary() {
-        SalaryRepository.getSalary(
-            onChange = {
-                salary = it
-            },
-            onFailure = {
-
-            }
-        )
+    //This function fetches the salary and total transactions (i,e totalNetB and Total Cash)
+    private fun fetchSalaryAndTotalMethods() {
+        viewModelScope.launch {
+            SalaryRepository.getSalary(
+                onChange = { remaining, cash, netBanking ->
+                    salary = remaining
+                    totalCashTransactions = cash
+                    totalNetBTransactions = netBanking
+                },
+                onFailure = { exception ->
+                    // Handle exception
+                }
+            )
+        }
     }
+
 
     fun signOut() {
         FirebaseService.auth.signOut()
@@ -62,25 +65,25 @@ class HomeViewModel : ViewModel() {
 
     }
 
-    private fun getTotalNetBTransactions() {
-        viewModelScope.launch {
-            try {
-                val total = TransactionRepository.getTransactionByMethod(TransactionRepository.TransactionMethod.NetBanking)
-                 totalNetBTransactions = total.toInt()
-            } catch (e: Exception) {
-                // Handle exception
-            }
-        }
-    }
-
-    private fun getTotalCashTransactions() {
-        viewModelScope.launch {
-            try {
-                val total = TransactionRepository.getTransactionByMethod(TransactionRepository.TransactionMethod.Cash)
-                totalCashTransactions = total.toInt()
-            } catch (e: Exception) {
-                // Handle exception
-            }
-        }
-    }
+//    private fun getTotalNetBTransactions() {
+//        viewModelScope.launch {
+//            try {
+//                val total = TransactionRepository.getTransactionByMethod(TransactionRepository.TransactionMethod.NetBanking)
+//                 totalNetBTransactions = total.toInt()
+//            } catch (e: Exception) {
+//                // Handle exception
+//            }
+//        }
+//    }
+//
+//    private fun getTotalCashTransactions() {
+//        viewModelScope.launch {
+//            try {
+//                val total = TransactionRepository.getTransactionByMethod(TransactionRepository.TransactionMethod.Cash)
+//                totalCashTransactions = total.toInt()
+//            } catch (e: Exception) {
+//                // Handle exception
+//            }
+//        }
+//    }
 }
