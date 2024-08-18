@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.financemanagement.view.AddTransactionView
+import com.example.financemanagement.view.HistoryView
 import com.example.financemanagement.view.HomeView
 import com.example.financemanagement.view.LoginView
 import com.example.financemanagement.view.SettingsView
@@ -48,6 +49,10 @@ fun Navigation() {
 
         composable(Screens.TransactionScreen.route){
             TransactionView(navController)
+        }
+
+        composable(Screens.HistoryScreen.route){
+            HistoryView(navController)
         }
     }
 }

@@ -1,15 +1,18 @@
-Currently Working
-Making TotalMethod to store as a node in Salary
-Data is pushed
-Work on Data fetching in the HomeViewModel
+CURRENTLY WORKING ON
+Working on teh HistoryView,it will have a dropDown with certain options, eg, there will be an option
+like sort by Date, and when the user selects it, the date picker should appear and the user can select the date
+Done
+
+Working on
+DropDown for the options
+Selected options should come
+ViewModel and new functions in the repository
+
 
 TO BE DONE NOW
-Sort out the Transactions in the TransactionView
 Make the fetching run on coroutines
 Clear the code
-Chang the Directories
 Fix the TotalNetB delay and salary Update per month delay
-Work on fetching reason from the DB
 Work on showing card and cash only transaction when the user clicks the card
 Add others in the DropDownForReason, which opens an input to type others
 

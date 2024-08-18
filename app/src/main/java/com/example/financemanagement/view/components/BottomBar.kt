@@ -43,7 +43,7 @@ fun BottomBar(
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.AppLightGreen)),
             border = BorderStroke(1.dp, Color.White)
         ) {
-            Text("Pie Chart", fontWeight = FontWeight.Bold)
+            Text("History", fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.weight(1f, true))
