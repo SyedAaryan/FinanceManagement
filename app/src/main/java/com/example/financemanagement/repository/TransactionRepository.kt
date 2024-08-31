@@ -117,7 +117,8 @@ object TransactionRepository {
 
     enum class TransactionMethod(private val method: String) {
         Cash("Cash"),
-        NetBanking("Net Banking");
+        NetBanking("Net Banking"),
+        BOTH("BOTH");
 
         override fun toString(): String = method
     }
