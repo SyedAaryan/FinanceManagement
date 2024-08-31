@@ -31,7 +31,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import com.example.financemanagement.R
 import com.example.financemanagement.repository.TransactionRepository
-import com.example.financemanagement.view.components.DropDownForReason
+import com.example.financemanagement.view.components.dropdown.DropDownForReason
 import com.example.financemanagement.view.components.RadioButtonGroup
 
 @Composable

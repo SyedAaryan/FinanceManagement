@@ -39,7 +39,9 @@ fun BottomBar(
         Spacer(modifier = Modifier.width(30.dp))
 
         Button(
-            onClick = { },
+            onClick = {
+                navController.navigate("historyScreen")
+            },
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.AppLightGreen)),
             border = BorderStroke(1.dp, Color.White)
         ) {

@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import com.example.financemanagement.R
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.DatePicker
-import com.example.financemanagement.view.components.DropDownForReason
+import com.example.financemanagement.view.components.dropdown.DropDownForReason
 import com.example.financemanagement.view.components.InputTextField
 import com.example.financemanagement.view.components.alertdialogs.AddReasonDialog
 import com.example.financemanagement.view.components.alertdialogs.DeleteReasonDialog

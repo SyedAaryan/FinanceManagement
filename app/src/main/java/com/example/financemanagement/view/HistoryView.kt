@@ -1,5 +1,6 @@
 package com.example.financemanagement.view
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.cards.TransactionCard
 import com.example.financemanagement.view.components.TransactionFloatingButton
+import com.example.financemanagement.view.components.dropdown.DropDownForHistory
 import com.example.financemanagement.viewmodel.HistoryViewModel
 
 @Composable
@@ -21,20 +23,15 @@ fun HistoryView(
 ) {
     Scaffold (
         topBar = {
-            AppBar(title = "Transactions",navController = navController)
-        },
-        floatingActionButton = {
-            TransactionFloatingButton(title = "Add Transaction") {
-                navController.navigate("addTransactionScreen")
-            }
+            AppBar(title = "History",navController = navController)
         }
     ){
-        LazyColumn(
+        Column (
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-        ){
-
+        ) {
+            DropDownForHistory()
         }
     }
 }

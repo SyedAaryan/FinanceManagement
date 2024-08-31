@@ -1,4 +1,4 @@
-package com.example.financemanagement.view.components
+package com.example.financemanagement.view.components.dropdown
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -63,8 +63,6 @@ fun DropDownForReason(
                     )
                 }
             }
-
         }
     }
-
 }
