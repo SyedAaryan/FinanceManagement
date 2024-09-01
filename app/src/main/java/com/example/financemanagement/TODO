@@ -1,3 +1,6 @@
+Add elements to the History when a particular option is selected
+
+
 CURRENTLY WORKING ON
 Working on teh HistoryView,it will have a dropDown with certain options, eg, there will be an option
 like sort by Date, and when the user selects it, the date picker should appear and the user can select the date

@@ -36,10 +36,11 @@ class AddTransactionViewModel : ViewModel() {
         selectedPaymentMethod = method
         selectedMethodTotal = when (method) {
             TransactionRepository.TransactionMethod.Cash.toString() -> SalaryRepository.TotalAmount.TotalCash.toString()
-            TransactionRepository.TransactionMethod.NetBanking.toString()-> SalaryRepository.TotalAmount.TotalNetBanking.toString()
+            TransactionRepository.TransactionMethod.NetBanking.toString() -> SalaryRepository.TotalAmount.TotalNetBanking.toString()
             else -> ""
         }
     }
+
 
     fun addTransaction(onSuccess: () -> Unit, onFailure: () -> Unit){
         viewModelScope.launch {

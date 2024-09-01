@@ -10,7 +10,6 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +22,8 @@ import com.example.financemanagement.repository.TransactionRepository
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownForTransactionMethod(
-
+    viewTitle : String,
+    onSelectionChange: (String) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("") }
@@ -52,14 +52,27 @@ fun DropDownForTransactionMethod(
                 onDismissRequest = { isExpanded = false },
                 modifier = Modifier.background(color = Color.White)
             ){
-                TransactionRepository.TransactionMethod.entries.forEach { method ->
-                    DropdownMenuItem(
-                        text = { Text(method.toString()) },
-                        onClick = {
-                            selectedItem = method.toString()
-                            isExpanded = false
-                        }
-                    )
+                when (viewTitle) {
+                    "History" -> TransactionRepository.TransactionMethod.entries.forEach { method ->
+                        DropdownMenuItem(
+                            text = { Text(method.toString()) },
+                            onClick = {
+                                selectedItem = method.toString()
+                                onSelectionChange(method.toString())
+                                isExpanded = false
+                            }
+                        )
+                    }
+                    "Add Transaction" -> TransactionRepository.TransactionMethod.entries.filter { it != TransactionRepository.TransactionMethod.BOTH }.forEach { method ->
+                        DropdownMenuItem(
+                            text = { Text(method.toString()) },
+                            onClick = {
+                                selectedItem = method.toString()
+                                onSelectionChange(method.toString())
+                                isExpanded = false
+                            }
+                        )
+                    }
                 }
             }
         }
