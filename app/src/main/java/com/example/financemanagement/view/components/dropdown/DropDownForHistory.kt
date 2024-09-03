@@ -10,7 +10,6 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,12 +24,16 @@ enum class Timeline(val value: String){
     PREVIOUS_30_DAYS("Last 30 Days"),
     SELECT_BY_DATES("From - To"),
     SELECT_BY_MONTH("Select By Month"),
-    OVERALL("Overall")
+    OVERALL("Overall");
+
+    override fun toString(): String = value
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownForHistory() {
+fun DropDownForHistory(
+    onSelectionChange: (String) -> Unit
+) {
     var isExpanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("") }
 
@@ -63,6 +66,7 @@ fun DropDownForHistory() {
                         text = { Text(timeline.value) },
                         onClick = {
                             selectedItem = timeline.value
+                            onSelectionChange(timeline.value)
                             isExpanded = false
                         }
                     )
