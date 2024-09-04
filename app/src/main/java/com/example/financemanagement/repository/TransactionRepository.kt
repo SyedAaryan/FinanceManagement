@@ -24,6 +24,14 @@ object TransactionRepository {
     private val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
     private val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
+    enum class TransactionMethod(private val method: String) {
+        Cash("Cash"),
+        NetBanking("Net Banking"),
+        BOTH("BOTH");
+
+        override fun toString(): String = method
+    }
+
     suspend fun addTransaction(
         date: Long,
         reason: String,
@@ -31,7 +39,8 @@ object TransactionRepository {
         method: String,
         methodTotal: String
     ): Result<Unit> {
-        val user = FirebaseService.user ?: return Result.failure(IllegalStateException("User is not authenticated."))
+        val user = FirebaseService.user
+            ?: return Result.failure(IllegalStateException("User is not authenticated."))
 
         val uid = user.uid
         val key = database.getReference("Users/$uid/Transactions").push().key ?: ""
@@ -85,7 +94,8 @@ object TransactionRepository {
                         dataSnapshot.key?.let { id ->
                             dataSnapshot.getValue(Transactions::class.java)?.let { transaction ->
                                 val transactionDate = Instant.ofEpochMilli(transaction.date).atZone(
-                                    ZoneId.systemDefault()).toLocalDate()
+                                    ZoneId.systemDefault()
+                                ).toLocalDate()
 
                                 if (transactionDate.year == currentYear && transactionDate.monthValue == currentMonth + 1) {
                                     _transactions[id] = transaction
@@ -104,61 +114,4 @@ object TransactionRepository {
             reference.addValueEventListener(transactionListener as ValueEventListener)
         }
     }
-
-//    private suspend fun getTransactionsSnapshot(): DataSnapshot {
-//        val user = FirebaseService.user
-//        if (user != null) {
-//            val uid = user.uid
-//            return database.getReference("Users/$uid/Transactions")
-//                .get().await()
-//        }
-//        throw IllegalStateException("User is not authenticated.")
-//    }
-
-    enum class TransactionMethod(private val method: String) {
-        Cash("Cash"),
-        NetBanking("Net Banking"),
-        BOTH("BOTH");
-
-        override fun toString(): String = method
-    }
-
-//    suspend fun getTransactionByMethod(transactionMethod: TransactionMethod): Double {
-//        FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
-//        try {
-//            if (transactionListener == null) {
-//                val snapshot = getTransactionsSnapshot()
-//                snapshot.children.forEach { dataSnapshot ->
-//                    dataSnapshot.key?.let { id ->
-//                        dataSnapshot.getValue(Transactions::class.java)?.let { transaction ->
-//                            _transactions[id] = transaction
-//                        }
-//                    }
-//                }
-//            }
-//
-//            var totalAmount = 0.0
-//
-//            for (transaction in _transactions) {
-//                val method = transaction.value.method
-//                val dateEpoch = transaction.value.date
-//                val amount = transaction.value.amount
-//
-//                if (method == transactionMethod.toString()) {
-//                    val transactionDate = Calendar.getInstance().apply {
-//                        timeInMillis = dateEpoch
-//                    }
-//                    val transactionMonth = transactionDate.get(Calendar.MONTH)
-//                    val transactionYear = transactionDate.get(Calendar.YEAR)
-//
-//                    if (transactionMonth == currentMonth && transactionYear == currentYear) {
-//                        totalAmount += amount
-//                    }
-//                }
-//            }
-//            return totalAmount
-//        } catch (e: Exception) {
-//            throw e
-//        }
-//    }
 }
