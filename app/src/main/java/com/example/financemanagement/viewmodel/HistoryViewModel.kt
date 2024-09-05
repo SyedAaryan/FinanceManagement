@@ -1,16 +1,16 @@
 package com.example.financemanagement.viewmodel
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class HistoryViewModel: ViewModel() {
 
-    private val _selectedTimeLine = MutableLiveData<String>()
-    val selectedTimeLine: LiveData<String> get() = _selectedTimeLine
+    private val _selectedTimeLine = mutableStateOf("")
+    val selectedTimeLine: State<String> get() = _selectedTimeLine
+    var historyByDate: Long? by mutableStateOf(null)
 
     private var selectedPaymentMethod by mutableStateOf("")
 
@@ -22,4 +22,7 @@ class HistoryViewModel: ViewModel() {
         selectedPaymentMethod = method
     }
 
+    fun onHistoryByDateChange(newDate: Long?){
+        historyByDate = newDate
+    }
 }
