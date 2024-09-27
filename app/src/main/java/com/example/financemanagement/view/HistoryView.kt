@@ -4,11 +4,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.financemanagement.view.components.AppBar
 import com.example.financemanagement.view.components.DatePicker
+import com.example.financemanagement.view.components.cards.TransactionCard
 import com.example.financemanagement.view.components.dropdown.DropDownForHistory
 import com.example.financemanagement.view.components.dropdown.DropDownForTransactionMethod
 import com.example.financemanagement.view.components.dropdown.Timeline
@@ -32,6 +36,9 @@ fun HistoryView(
 ) {
 
     val showDatePicker = remember { mutableStateOf(false) }
+
+
+    val transactions by viewmodel.transactionsData
 
     Scaffold(
         topBar = {
@@ -64,15 +71,32 @@ fun HistoryView(
                             viewmodel.onHistoryByDateChange(selectedDate)
                         }
                     )
+
+                    DropDownForTransactionMethod(
+                        viewTitle = "History",
+                        onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
+                    )
+
+                    Button(onClick = {
+                        viewmodel.performAction(Timeline.DATE.toString())
+                    }) {
+                        Text(text = "Search")
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            DropDownForTransactionMethod(
-                viewTitle = "History",
-                onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
-            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ){
+                items(transactions.values.toList()){ transaction->
+                    TransactionCard(transaction = transaction, reason = viewmodel.reasonsMap[transaction.reason])
+                }
+            }
+
         }
     }
 }
