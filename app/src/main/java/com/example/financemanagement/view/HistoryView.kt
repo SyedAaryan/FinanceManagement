@@ -35,7 +35,14 @@ fun HistoryView(
     viewmodel: HistoryViewModel = viewModel()
 ) {
 
+    //This is for general date picker
     val showDatePicker = remember { mutableStateOf(false) }
+
+    //This is for "From" date picker
+    val showFromDatePicker = remember { mutableStateOf(false) }
+
+    //This is for "To" date picker
+    val showToDatePicker = remember { mutableStateOf(false) }
 
 
     val transactions by viewmodel.transactionsData
@@ -74,7 +81,7 @@ fun HistoryView(
                     DatePicker(
                         openDialog = showDatePicker,
                         onDateSelected = { selectedDate ->
-                            viewmodel.onHistoryByDateChange(selectedDate)
+                            viewmodel.onHistoryDateChange(selectedDate)
                         }
                     )
 
@@ -111,6 +118,62 @@ fun HistoryView(
 
                     Button(onClick = {
                         viewmodel.performAction(Timeline.PREVIOUS_30_DAYS.toString())
+                    }) {
+                        Text(text = "Search")
+                    }
+                }
+
+                Timeline.SELECT_BY_DATES.toString() -> {
+
+                    OutlinedButton(
+                        onClick = {
+                            showFromDatePicker.value = true
+                        }
+                    ) {
+                        Text(viewmodel.fromDate?.let {
+                            LocalDateTime.ofInstant(
+                                Instant.ofEpochMilli(
+                                    it
+                                ), ZoneId.systemDefault()
+                            ).toLocalDate().toString()
+                        } ?: "From")
+                    }
+
+                    DatePicker(
+                        openDialog = showFromDatePicker,
+                        onDateSelected = { selectedDate ->
+                            viewmodel.onFromDateChange(selectedDate)
+                        }
+                    )
+
+                    OutlinedButton(
+                        onClick = {
+                            showToDatePicker.value = true
+                        }
+                    ) {
+                        Text(viewmodel.toDate?.let {
+                            LocalDateTime.ofInstant(
+                                Instant.ofEpochMilli(
+                                    it
+                                ), ZoneId.systemDefault()
+                            ).toLocalDate().toString()
+                        } ?: "To")
+                    }
+
+                    DatePicker(
+                        openDialog = showToDatePicker,
+                        onDateSelected = { selectedDate ->
+                            viewmodel.onToDateChange(selectedDate)
+                        }
+                    )
+
+                    DropDownForTransactionMethod(
+                        viewTitle = "History",
+                        onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
+                    )
+
+                    Button(onClick = {
+                        viewmodel.performAction(Timeline.SELECT_BY_DATES.toString())
                     }) {
                         Text(text = "Search")
                     }

@@ -27,7 +27,7 @@ object HistoryRepository {
                     }
 
                     if (transactionDate == selectedDate && methodCheck) {
-                        dataSnapshot.key.let { id -> id to transactions }
+                        dataSnapshot.key to transactions
                     } else {
                         null
                     }
@@ -59,7 +59,7 @@ object HistoryRepository {
                     }
 
                     if (transactionDate >= previousWeekDate  && methodCheck) {
-                        dataSnapshot.key.let { id -> id to transactions }
+                        dataSnapshot.key to transactions
                     } else {
                         null
                     }
@@ -91,7 +91,7 @@ object HistoryRepository {
                     }
 
                     if (transactionDate >= previousMonthDate  && methodCheck) {
-                        dataSnapshot.key.let { id -> id to transactions }
+                        dataSnapshot.key to transactions
                     } else {
                         null
                     }
@@ -104,5 +104,35 @@ object HistoryRepository {
         }
     }
 
+    suspend fun fetchHistoryByDates(fromDate: Long,toDate: Long, selectedMethod: String): Result<Map<String?, Transactions>>{
+        val user = FirebaseService.user ?: throw IllegalStateException("User is not authenticated.")
+        val uid = user.uid
+        val historyRef = database.getReference("Users/$uid/Transactions")
 
+        return try {
+            val snapshot = historyRef.get().await()
+            val transactionMap = snapshot.children
+                .mapNotNull { dataSnapshot ->
+                    val transactions = dataSnapshot.getValue(Transactions::class.java)
+                    val transactionDate = transactions?.date ?: return@mapNotNull null
+
+                    val methodCheck = if (selectedMethod == TransactionRepository.TransactionMethod.BOTH.toString()) {
+                        true
+                    } else {
+                        transactions.method == selectedMethod
+                    }
+
+                    if (transactionDate in fromDate..toDate && methodCheck) {
+                        dataSnapshot.key to transactions
+                    } else {
+                        null
+                    }
+
+                }
+                .toMap()
+            Result.success(transactionMap)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
