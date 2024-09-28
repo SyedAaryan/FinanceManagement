@@ -57,13 +57,19 @@ fun HistoryView(
             Spacer(modifier = Modifier.padding(8.dp))
 
             when (viewmodel.selectedTimeLine.value) {
-                Timeline.DATE.toString() ->{
+                Timeline.DATE.toString() -> {
                     OutlinedButton(
                         onClick = {
                             showDatePicker.value = true
                         }
                     ) {
-                        Text(viewmodel.historyByDate?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault()).toLocalDate().toString()} ?: "Select Date" )
+                        Text(viewmodel.historyByDate?.let {
+                            LocalDateTime.ofInstant(
+                                Instant.ofEpochMilli(
+                                    it
+                                ), ZoneId.systemDefault()
+                            ).toLocalDate().toString()
+                        } ?: "Select Date")
                     }
                     DatePicker(
                         openDialog = showDatePicker,
@@ -83,7 +89,8 @@ fun HistoryView(
                         Text(text = "Search")
                     }
                 }
-                Timeline.PREVIOUS_WEEK.toString() ->{
+
+                Timeline.PREVIOUS_WEEK.toString() -> {
                     DropDownForTransactionMethod(
                         viewTitle = "History",
                         onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
@@ -91,6 +98,19 @@ fun HistoryView(
 
                     Button(onClick = {
                         viewmodel.performAction(Timeline.PREVIOUS_WEEK.toString())
+                    }) {
+                        Text(text = "Search")
+                    }
+                }
+
+                Timeline.PREVIOUS_30_DAYS.toString() -> {
+                    DropDownForTransactionMethod(
+                        viewTitle = "History",
+                        onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
+                    )
+
+                    Button(onClick = {
+                        viewmodel.performAction(Timeline.PREVIOUS_30_DAYS.toString())
                     }) {
                         Text(text = "Search")
                     }

@@ -40,6 +40,15 @@ class HistoryViewModel : ViewModel() {
                 .toEpochMilli()
         }
 
+    private val previousMonth: Long
+        get() {
+            return LocalDate.now()
+                .minusDays(30)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
+        }
+
 
     fun onTimeLineChange(timeline: String) {
         _selectedTimeLine.value = timeline
@@ -61,6 +70,10 @@ class HistoryViewModel : ViewModel() {
             }
             Timeline.PREVIOUS_WEEK.toString() -> {
                 fetchHistoryByPreviousWeek()
+                fetchReasons()
+            }
+            Timeline.PREVIOUS_30_DAYS.toString() -> {
+                fetchHistoryByPreviousMonth()
                 fetchReasons()
             }
         }
@@ -87,6 +100,23 @@ class HistoryViewModel : ViewModel() {
         viewModelScope.launch {
             val result = HistoryRepository.fetchHistoryByPreviousWeek(
                 previousWeek,
+                selectedPaymentMethod)
+
+            result.onSuccess { transactions ->
+                _transactionsData.value = transactions.entries
+                    .sortedByDescending { it.value.date }
+                    .associate { it.key to it.value }
+                errorLiveData.value = null
+            }.onFailure { exception ->
+                errorLiveData.value = exception.message
+            }
+        }
+    }
+
+    private fun fetchHistoryByPreviousMonth(){
+        viewModelScope.launch {
+            val result = HistoryRepository.fetchHistoryByPreviousMonth(
+                previousMonth,
                 selectedPaymentMethod)
 
             result.onSuccess { transactions ->
