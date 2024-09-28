@@ -83,6 +83,18 @@ fun HistoryView(
                         Text(text = "Search")
                     }
                 }
+                Timeline.PREVIOUS_WEEK.toString() ->{
+                    DropDownForTransactionMethod(
+                        viewTitle = "History",
+                        onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
+                    )
+
+                    Button(onClick = {
+                        viewmodel.performAction(Timeline.PREVIOUS_WEEK.toString())
+                    }) {
+                        Text(text = "Search")
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.padding(8.dp))

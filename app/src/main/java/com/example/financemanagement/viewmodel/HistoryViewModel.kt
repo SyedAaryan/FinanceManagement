@@ -11,6 +11,8 @@ import com.example.financemanagement.repository.HistoryRepository
 import com.example.financemanagement.repository.ReasonRepository
 import com.example.financemanagement.view.components.dropdown.Timeline
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
 
 class HistoryViewModel : ViewModel() {
 
@@ -28,6 +30,16 @@ class HistoryViewModel : ViewModel() {
 
     var reasonsMap by mutableStateOf(mapOf<String, String>())
         private set
+
+    private val previousWeek: Long
+        get() {
+            return LocalDate.now()
+                .minusDays(7)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
+        }
+
 
     fun onTimeLineChange(timeline: String) {
         _selectedTimeLine.value = timeline
@@ -47,6 +59,10 @@ class HistoryViewModel : ViewModel() {
                 fetchHistoryByDate()
                 fetchReasons()
             }
+            Timeline.PREVIOUS_WEEK.toString() -> {
+                fetchHistoryByPreviousWeek()
+                fetchReasons()
+            }
         }
     }
 
@@ -54,6 +70,23 @@ class HistoryViewModel : ViewModel() {
         viewModelScope.launch {
             val result = HistoryRepository.fetchHistoryByDate(
                 historyByDate ?: 0L,
+                selectedPaymentMethod)
+
+            result.onSuccess { transactions ->
+                _transactionsData.value = transactions.entries
+                    .sortedByDescending { it.value.date }
+                    .associate { it.key to it.value }
+                errorLiveData.value = null
+            }.onFailure { exception ->
+                errorLiveData.value = exception.message
+            }
+        }
+    }
+
+    private fun fetchHistoryByPreviousWeek(){
+        viewModelScope.launch {
+            val result = HistoryRepository.fetchHistoryByPreviousWeek(
+                previousWeek,
                 selectedPaymentMethod)
 
             result.onSuccess { transactions ->
