@@ -51,7 +51,8 @@ fun HomeView(
                                 navController.navigate("settingScreen")
                             }
 
-                        })
+                        }
+                    )
 
                     Spacer(Modifier.height(12.dp))
                     NavigationDrawerItem(
@@ -64,7 +65,8 @@ fun HomeView(
                                 navController.navigate("loginScreen")
                             }
 
-                        })
+                        }
+                    )
                 }
             }
         }
