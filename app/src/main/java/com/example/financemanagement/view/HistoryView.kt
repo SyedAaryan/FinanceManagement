@@ -38,13 +38,6 @@ fun HistoryView(
     //This is for general date picker
     val showDatePicker = remember { mutableStateOf(false) }
 
-    //This is for "From" date picker
-    val showFromDatePicker = remember { mutableStateOf(false) }
-
-    //This is for "To" date picker
-    val showToDatePicker = remember { mutableStateOf(false) }
-
-
     val transactions by viewmodel.transactionsData
 
     Scaffold(
@@ -122,62 +115,6 @@ fun HistoryView(
                         Text(text = "Search")
                     }
                 }
-
-                Timeline.SELECT_BY_DATES.toString() -> {
-
-                    OutlinedButton(
-                        onClick = {
-                            showFromDatePicker.value = true
-                        }
-                    ) {
-                        Text(viewmodel.fromDate?.let {
-                            LocalDateTime.ofInstant(
-                                Instant.ofEpochMilli(
-                                    it
-                                ), ZoneId.systemDefault()
-                            ).toLocalDate().toString()
-                        } ?: "From")
-                    }
-
-                    DatePicker(
-                        openDialog = showFromDatePicker,
-                        onDateSelected = { selectedDate ->
-                            viewmodel.onFromDateChange(selectedDate)
-                        }
-                    )
-
-                    OutlinedButton(
-                        onClick = {
-                            showToDatePicker.value = true
-                        }
-                    ) {
-                        Text(viewmodel.toDate?.let {
-                            LocalDateTime.ofInstant(
-                                Instant.ofEpochMilli(
-                                    it
-                                ), ZoneId.systemDefault()
-                            ).toLocalDate().toString()
-                        } ?: "To")
-                    }
-
-                    DatePicker(
-                        openDialog = showToDatePicker,
-                        onDateSelected = { selectedDate ->
-                            viewmodel.onToDateChange(selectedDate)
-                        }
-                    )
-
-                    DropDownForTransactionMethod(
-                        viewTitle = "History",
-                        onSelectionChange = { viewmodel.onPaymentMethodChange(it) }
-                    )
-
-                    Button(onClick = {
-                        viewmodel.performAction(Timeline.SELECT_BY_DATES.toString())
-                    }) {
-                        Text(text = "Search")
-                    }
-                }
             }
 
             Spacer(modifier = Modifier.padding(8.dp))
@@ -186,9 +123,12 @@ fun HistoryView(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(it)
-            ){
-                items(transactions.values.toList()){ transaction->
-                    TransactionCard(transaction = transaction, reason = viewmodel.reasonsMap[transaction.reason])
+            ) {
+                items(transactions.values.toList()) { transaction ->
+                    TransactionCard(
+                        transaction = transaction,
+                        reason = viewmodel.reasonsMap[transaction.reason]
+                    )
                 }
             }
 

@@ -20,8 +20,6 @@ class HistoryViewModel : ViewModel() {
     val selectedTimeLine: State<String> get() = _selectedTimeLine
 
     var historyByDate: Long? by mutableStateOf(null)
-    var fromDate: Long? by mutableStateOf(null)
-    var toDate: Long? by mutableStateOf(null)
 
     private var selectedPaymentMethod by mutableStateOf("")
 
@@ -64,14 +62,6 @@ class HistoryViewModel : ViewModel() {
         historyByDate = newDate
     }
 
-    fun onFromDateChange(newDate: Long?) {
-        fromDate = newDate
-    }
-
-    fun onToDateChange(newDate: Long?) {
-        toDate = newDate
-    }
-
     fun performAction(string: String){
         when(string){
             Timeline.DATE.toString() -> {
@@ -84,10 +74,6 @@ class HistoryViewModel : ViewModel() {
             }
             Timeline.PREVIOUS_30_DAYS.toString() -> {
                 fetchHistoryByPreviousMonth()
-                fetchReasons()
-            }
-            Timeline.SELECT_BY_DATES.toString() -> {
-                fetchHistoryByDates()
                 fetchReasons()
             }
         }
@@ -131,25 +117,6 @@ class HistoryViewModel : ViewModel() {
         viewModelScope.launch {
             val result = HistoryRepository.fetchHistoryByPreviousMonth(
                 previousMonth,
-                selectedPaymentMethod)
-
-            result.onSuccess { transactions ->
-                _transactionsData.value = transactions.entries
-                    .sortedByDescending { it.value.date }
-                    .associate { it.key to it.value }
-                errorLiveData.value = null
-            }.onFailure { exception ->
-                errorLiveData.value = exception.message
-            }
-        }
-    }
-
-    //This function is used to fetch history between the selected dates
-    private fun fetchHistoryByDates(){
-        viewModelScope.launch {
-            val result = HistoryRepository.fetchHistoryByDates(
-                fromDate ?: 0L,
-                toDate ?: 0L,
                 selectedPaymentMethod)
 
             result.onSuccess { transactions ->

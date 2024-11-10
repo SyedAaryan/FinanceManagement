@@ -21,10 +21,7 @@ import androidx.compose.ui.graphics.Color
 enum class Timeline(val value: String){
     DATE("Select Date"),
     PREVIOUS_WEEK("Last 7 Days"),
-    PREVIOUS_30_DAYS("Last 30 Days"),
-    SELECT_BY_DATES("From - To"),
-    SELECT_BY_MONTH("Select By Month"),
-    OVERALL("Overall");
+    PREVIOUS_30_DAYS("Last 30 Days");
 
     override fun toString(): String = value
 }
